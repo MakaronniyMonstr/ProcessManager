@@ -1,5 +1,8 @@
 package sample.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProcessEntry {
     private int usageCount;
     private int ProcessID;
@@ -8,7 +11,9 @@ public class ProcessEntry {
     private int countThreads;
     private int parentProcessID;
     private long basePriority;
-    private String exeFile;
+    private String exePath;
+
+    private List<ModuleEntry> moduleEntries = new ArrayList<>();
 
     public int getUsageCount() {
         return usageCount;
@@ -66,11 +71,19 @@ public class ProcessEntry {
         this.basePriority = basePriority;
     }
 
-    public String getExeFile() {
-        return exeFile;
+    public String getExePath() {
+        return exePath;
     }
 
-    public void setExeFile(String exeFile) {
-        this.exeFile = exeFile;
+    public void setExePath(String exePath) {
+        this.exePath = exePath;
+    }
+
+    public void addModule(ModuleEntry moduleEntry) {
+        moduleEntries.add(moduleEntry);
+    }
+
+    public List<ModuleEntry> getModuleEntries() {
+        return moduleEntries;
     }
 }
