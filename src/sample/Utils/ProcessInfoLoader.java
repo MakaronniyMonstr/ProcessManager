@@ -1,8 +1,5 @@
 package sample.Utils;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.List;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -13,14 +10,14 @@ public class ProcessInfoLoader {
     private static ProcessInfoLoader loader;
     //Hold processes list
     private BlockingDeque<ProcessEntry> processEntries = new LinkedBlockingDeque<>();
-    private onProcessesInfoLoadedListener processesListener;
-    private onModuleInfoLoadedListener moduleListener;
+    private OnProcessesInfoLoadedListener processesListener;
+    private OnModuleInfoLoadedListener moduleListener;
 
-    public interface onProcessesInfoLoadedListener {
+    public interface OnProcessesInfoLoadedListener {
         void onProcessesInfoLoaded(List<ProcessEntry> processEntries);
     }
 
-    public interface onModuleInfoLoadedListener {
+    public interface OnModuleInfoLoadedListener {
         void onModuleInfoLoaded(ModuleEntry moduleEntry);
     }
 
@@ -34,43 +31,11 @@ public class ProcessInfoLoader {
         return loader;
     }
 
-    public void setProcessesListener(onProcessesInfoLoadedListener mProcessesListener) {
+    public void addOnProcessesLoadedListener(OnProcessesInfoLoadedListener mProcessesListener) {
         loader.processesListener = mProcessesListener;
     }
 
-    public void setModuleListener(onModuleInfoLoadedListener mModuleListener) {
+    public void addOnModuleLoadedListener(OnModuleInfoLoadedListener mModuleListener) {
         loader.moduleListener = mModuleListener;
-    }
-
-    public void startRunningProcessesLoadTask() {
-        Thread task = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Process process = Runtime.getRuntime().exec(EXECUTABLE_NAME);
-
-                    Reader reader = new InputStreamReader(process.getInputStream());
-                } catch (IOException e) { e.printStackTrace(); }
-            }
-        });
-
-        task.setDaemon(true);
-        task.start();
-    }
-
-    public void startProcessModulesLoadTask(int processID) {
-        Thread task = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Process process = Runtime.getRuntime().exec(EXECUTABLE_NAME + " " + processID);
-
-                    Reader reader = new InputStreamReader(process.getInputStream());
-                } catch (IOException e) { e.printStackTrace(); }
-            }
-        });
-
-        task.setDaemon(true);
-        task.start();
     }
 }
