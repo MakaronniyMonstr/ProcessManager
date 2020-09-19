@@ -1,4 +1,6 @@
-package sample.Utils;
+package sample.utils.processloader;
+
+import java.util.Objects;
 
 public class ModuleEntry {
     private int moduleID;
@@ -72,5 +74,20 @@ public class ModuleEntry {
 
     public void setExePath(String exePath) {
         this.exePath = exePath;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ModuleEntry that = (ModuleEntry) o;
+        return processID == that.processID &&
+                moduleName.equals(that.moduleName) &&
+                exePath.equals(that.exePath);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(processID, moduleName, exePath);
     }
 }
