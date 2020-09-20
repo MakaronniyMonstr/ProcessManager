@@ -3,22 +3,11 @@ package sample.utils.processloader;
 import java.util.Objects;
 
 public class ModuleEntry {
-    private int moduleID;
     private int processID;
-    private int globalCountUsage;
-    private int processCountUsage;
     private String moduleBaseAddress;
     private int moduleSize;
     private String moduleName;
     private String exePath;
-
-    public int getModuleID() {
-        return moduleID;
-    }
-
-    public void setModuleID(int moduleID) {
-        this.moduleID = moduleID;
-    }
 
     public int getProcessID() {
         return processID;
@@ -26,22 +15,6 @@ public class ModuleEntry {
 
     public void setProcessID(int processID) {
         this.processID = processID;
-    }
-
-    public int getGlobalCountUsage() {
-        return globalCountUsage;
-    }
-
-    public void setGlobalCountUsage(int globalCountUsage) {
-        this.globalCountUsage = globalCountUsage;
-    }
-
-    public int getProcessCountUsage() {
-        return processCountUsage;
-    }
-
-    public void setProcessCountUsage(int processCountUsage) {
-        this.processCountUsage = processCountUsage;
     }
 
     public String getModuleBaseAddress() {

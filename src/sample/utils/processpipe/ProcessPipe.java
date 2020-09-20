@@ -24,11 +24,15 @@ public class ProcessPipe {
     public BufferedWriter getWriter() {
         assert (process != null);
 
-        writer =  new BufferedWriter(
+        writer = new BufferedWriter(
                 new OutputStreamWriter(process.getOutputStream())
         );
 
         return writer;
+    }
+
+    public void waitFor() throws InterruptedException {
+        process.waitFor();
     }
 
     public void destroy() {

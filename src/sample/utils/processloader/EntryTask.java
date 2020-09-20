@@ -1,17 +1,26 @@
 package sample.utils.processloader;
 
 public class EntryTask {
-    private Type type;
+    private EntryTaskType type;
     private ProcessEntry processEntry;
 
-    public enum Type {
-        UPDATE_PROCESS,
-        UPDATE_MODULES,
-        REMOVE
+    public enum EntryTaskType {
+        ADD_PROCESS,
+        ADD_MODULE,
+        REMOVE,
+        ERROR
     }
 
-    public EntryTask(Type type, ProcessEntry processEntry) {
+    public EntryTask(EntryTaskType type, ProcessEntry processEntry) {
         this.type = type;
         this.processEntry = processEntry;
+    }
+
+    public EntryTaskType getType() {
+        return type;
+    }
+
+    public ProcessEntry getProcessEntry() {
+        return processEntry;
     }
 }
