@@ -33,7 +33,6 @@ public class ProcessInfoLoader {
         void onModuleInfoLoaded(ProcessEntry processEntry);
     }
 
-    public interface OnUpdate
 
     private ProcessInfoLoader() {}
 
