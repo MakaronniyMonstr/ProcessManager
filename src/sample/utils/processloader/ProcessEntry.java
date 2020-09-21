@@ -1,89 +1,102 @@
 package sample.utils.processloader;
 
-import java.util.HashSet;
-import java.util.Objects;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProcessEntry {
-    private int processID;
-    private int countThreads;
-    private int parentProcessID;
-    private long basePriority;
-    private String exePath;
 
-    private HashSet<ModuleEntry> moduleEntries = new HashSet<>();
+    private StringProperty processName;
+    private IntegerProperty processID;
+    private IntegerProperty moduleID;
+    private IntegerProperty parentProcessID;
+    private IntegerProperty basePriority;
+    private StringProperty exePath;
 
-    public ProcessEntry(String[] params) {
-        this.processID = Integer.parseInt(params[0]);
-        this.countThreads = Integer.parseInt(params[1]);
-        this.parentProcessID = Integer.parseInt(params[2]);
-        this.basePriority = Integer.parseInt(params[3]);
-        this.exePath = params[4];
+    private List<ModuleEntry> moduleEntries = new ArrayList<>();
+
+
+    public ProcessEntry(String name, int processID, int moduleID, int parentProcessID, int basePriority, String exePath)
+    {
+        this.processName = new SimpleStringProperty(name);
+        this.processID = new SimpleIntegerProperty(processID);
+        this.moduleID = new SimpleIntegerProperty(moduleID);
+        this.parentProcessID = new SimpleIntegerProperty(parentProcessID);
+        this.basePriority = new SimpleIntegerProperty(basePriority);
+        this.exePath = new SimpleStringProperty(exePath);
+    }
+
+    public void setProcessName(String name)
+    {
+        this.processName.set(name);
+    }
+
+    public String getProcessName()
+    {
+        return processName.get();
+    }
+
+    public StringProperty getProcessNameProperty() {
+        return processName;
     }
 
     public int getProcessID() {
+        return processID.get();
+    }
+
+    public IntegerProperty getProcessIDProperty() {
         return processID;
     }
 
     public void setProcessID(int processID) {
-        this.processID = processID;
+        this.processID.set(processID);
     }
 
-    public int getCountThreads() {
-        return countThreads;
+    public int getModuleID() {
+        return moduleID.get();
     }
 
-    public void setCountThreads(int countThreads) {
-        this.countThreads = countThreads;
+    public void setModuleID(int moduleID) {
+        this.moduleID.set(moduleID);
     }
 
     public int getParentProcessID() {
-        return parentProcessID;
+        return parentProcessID.get();
     }
 
     public void setParentProcessID(int parentProcessID) {
-        this.parentProcessID = parentProcessID;
+        this.parentProcessID.set(parentProcessID);
     }
 
-    public long getBasePriority() {
-        return basePriority;
+    public int getBasePriority() {
+        return basePriority.get();
     }
 
-    public void setBasePriority(long basePriority) {
-        this.basePriority = basePriority;
-    }
-
-    public String getExePath() {
-        return exePath;
+    public void setBasePriority(int basePriority) {
+        this.basePriority.set(basePriority);
     }
 
     public void setExePath(String exePath) {
-        this.exePath = exePath;
+        this.exePath.set(exePath);
+    }
+
+    public String getExePath() {
+        return exePath.get();
+    }
+
+    public StringProperty getExePathProperty() {
+        return exePath;
     }
 
     public void addModule(ModuleEntry moduleEntry) {
         moduleEntries.add(moduleEntry);
     }
 
-    public HashSet<ModuleEntry> getModuleEntries() {
+    public List<ModuleEntry> getModuleEntries() {
         return moduleEntries;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProcessEntry that = (ProcessEntry) o;
-
-        return processID == that.processID &&
-                countThreads == that.countThreads &&
-                parentProcessID == that.parentProcessID &&
-                basePriority == that.basePriority &&
-                exePath.equals(that.exePath) &&
-                moduleEntries.equals(that.moduleEntries);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(processID, countThreads, parentProcessID, basePriority, exePath, moduleEntries);
     }
 }
