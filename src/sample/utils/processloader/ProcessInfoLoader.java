@@ -33,7 +33,9 @@ public class ProcessInfoLoader {
         void onModuleInfoLoaded(ProcessEntry processEntry);
     }
 
-    public interface OnUpdate
+    public interface OnTaskCompletedListener {
+        void onTaskCompleted(EntryTask task);
+    }
 
     private ProcessInfoLoader() {}
 
