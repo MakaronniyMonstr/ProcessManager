@@ -3,11 +3,12 @@ package sample.utils.processloader;
 public class EntryTask {
     private EntryTaskType type;
     private ProcessEntry processEntry;
+    private String errorInfo;
 
     public enum EntryTaskType {
         ADD_PROCESS,
         ADD_MODULE,
-        REMOVE,
+        REMOVE_PROCESS,
         ERROR
     }
 
