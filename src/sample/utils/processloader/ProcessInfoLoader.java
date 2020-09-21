@@ -17,14 +17,14 @@ public class ProcessInfoLoader {
     private static ProcessInfoLoader loader;
     //Listeners
     private OnProcessesInfoUpdatedListener processesListener;
-    private OnTaskCompletedListener taskListener;
+    private OnUtilTaskCompletedListener utilListener;
     //Service threads
     private ScheduledExecutorService processesUpdateService;
-    private ScheduledExecutorService moduleLoadService;
+    private ScheduledExecutorService utilExecuteService;
     //Processes list
     private Map<String, ProcessEntry> processEntries = new HashMap<>();
     //Task list
-    private BlockingDeque<EntryTask> tasks = new LinkedBlockingDeque<>();
+    private BlockingDeque<UtilTask> tasks = new LinkedBlockingDeque<>();
 
     //Updates your UI.
     public interface OnProcessesInfoUpdatedListener {
@@ -32,8 +32,8 @@ public class ProcessInfoLoader {
     }
 
     //Updates your UI.
-    public interface OnTaskCompletedListener {
-        void onTaskCompleted(EntryTask task);
+    public interface OnUtilTaskCompletedListener {
+        void onTaskCompleted(UtilTask task);
     }
 
     private ProcessInfoLoader() {
@@ -48,6 +48,14 @@ public class ProcessInfoLoader {
         }
 
         return loader;
+    }
+
+    public void setOnUtilTaskCompletedListener(OnUtilTaskCompletedListener utilListener) {
+        loader.utilListener = utilListener;
+    }
+
+    public void setOnProcessesInfoUpdatedListener(OnProcessesInfoUpdatedListener processesListener) {
+        loader.processesListener = processesListener;
     }
 
     //Here you set up and run processes update service.
@@ -65,7 +73,6 @@ public class ProcessInfoLoader {
                 () -> {
                     try {
                         ProcessPipe pipe;
-                        List<ProcessEntry> processEntries;
 
                         pipe = new ProcessPipe(execPath, "");
                         processesListener
@@ -82,22 +89,40 @@ public class ProcessInfoLoader {
 
     //Additional functionality.
     //Allows you to receive additional system information.
-    //Pay attention to EntryTask class.
-    public void setOnTaskCompletedListener(OnTaskCompletedListener taskListener) {
-        loader.taskListener = taskListener;
+    //Pay attention to UtilTask class.
+    public void setOnTaskCompletedListener(OnUtilTaskCompletedListener taskListener) {
+        loader.utilListener = taskListener;
+    }
+
+    //Run new task
+    public void runNewTask(UtilTask task) {
+        if (loader.utilListener == null)
+            return;
+
+        utilExecuteService.execute(
+                () -> {
+                    try {
+                        ProcessPipe pipe;
+
+                        pipe = new ProcessPipe(execPath, "");
+                        utilListener
+                                .onTaskCompleted(parseTask(pipe.getReader()));
+
+                    } catch (IOException e) { e.printStackTrace(); }
+                }
+        );
     }
 
     //Parse console output
     private List<ProcessModifyTask> parseProcessOutput(BufferedReader processReader) throws IOException {
         List<ProcessModifyTask> processTasksList = new ArrayList<>();
         Map<String, ProcessEntry> processEntriesUpdated = new HashMap<>(processEntries);
+        String line;
 
-        while (processReader.ready()) {
-            String line;
+        while ((line = processReader.readLine()) != null) {
             String[] params;
             ProcessEntry process;
 
-            line = processReader.readLine();
             params = line.split(" ");
             process = new ProcessEntry(params);
 
@@ -119,9 +144,7 @@ public class ProcessInfoLoader {
             }
         }
 
-        /*
         //Compare new and old processes maps to find difference and remove processes
-         */
         processEntries.forEach((key, value) -> {
             if (!processEntriesUpdated.containsValue(key)) {
                 processTasksList.add(new ProcessModifyTask(
@@ -139,7 +162,13 @@ public class ProcessInfoLoader {
         return processTasksList;
     }
 
-    private ModuleEntry parseTask(BufferedReader moduleReader) {
+    private UtilTask parseTask(BufferedReader reader) throws IOException {
+        String line;
+
+        while ((line = reader.readLine()) != null) {
+
+        }
+
         return null;
     }
 }
