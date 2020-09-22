@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.application.Application;
@@ -15,10 +16,12 @@ import sample.controllers.DialogController;
 import sample.controllers.MainController;
 import sample.utils.processloader.ProcessEntry;
 import sample.utils.processloader.ProcessInfoLoader;
+import sample.utils.processloader.ProcessModifyTask;
 
 import java.io.IOException;
+import java.util.List;
 
-public class Main extends Application {
+public class Main extends Application implements ProcessInfoLoader.OnProcessesInfoUpdatedListener {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
@@ -27,9 +30,13 @@ public class Main extends Application {
     public Main()
     {
         ProcessInfoLoader loader = ProcessInfoLoader.getInstance();
-        processEntryList.add(new ProcessEntry("test", 1, 2, 3, "some_path/test.proc"));
-        processEntryList.add(new ProcessEntry("test1", 5, 6, 7, "some_path/test1.proc"));
-        processEntryList.add(new ProcessEntry("test2", 9, 10, 11, "some_path/test2.proc"));
+
+        loader.getInstance().setOnProcessesUpdatedListener(this);
+
+        //processEntryList.add(new ProcessEntry("test", 1, 2, 3, "some_path/test.proc"));
+        //processEntryList.add(new ProcessEntry("test1", 5, 6, 7, "some_path/test1.proc"));
+        //processEntryList.add(new ProcessEntry("test2", 9, 10, 11, "some_path/test2.proc"));
+
     }
 
     @Override
@@ -37,7 +44,8 @@ public class Main extends Application {
 
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Process Manager");
-        this.primaryStage.getIcons().add(new Image("sample/view/main_icon.png"));
+        this.primaryStage.getIcons().add(new Image("sample/resources/main_icon.png"));
+        this.primaryStage.setResizable(false);
 
         initRootLayout();
         showProcessOverview();
@@ -50,7 +58,7 @@ public class Main extends Application {
         try {
             // Загружаем корневой макет из fxml файла.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("root_layout.fxml"));
+            loader.setLocation(Main.class.getResource("resources/root_layout.fxml"));
             rootLayout = (BorderPane) loader.load();
 
             // Отображаем сцену, содержащую корневой макет.
@@ -67,7 +75,7 @@ public class Main extends Application {
         try {
             // Загружаем сведения об адресатах.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("sample.fxml"));
+            loader.setLocation(Main.class.getResource("resources/sample.fxml"));
             AnchorPane processOverview = (AnchorPane) loader.load();
 
             // Помещаем сведения об адресатах в центр корневого макета.
@@ -86,7 +94,7 @@ public class Main extends Application {
         try {
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("process_edit_layout.fxml"));
+            loader.setLocation(Main.class.getResource("resources/process_edit_layout.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
             // Создаём диалоговое окно Stage.
@@ -123,5 +131,16 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void onProcessesInfoLoaded(List<ProcessModifyTask> processModifyTasks) {
+
+        //edition of mas
+        for (ProcessModifyTask process : processModifyTasks)
+        {
+
+        }
+
     }
 }

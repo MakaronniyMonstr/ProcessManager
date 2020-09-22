@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class ProcessInfoLoader {
+
     private final int SERVICE_PERIOD_MS = 1500;
     private final String EXECUTABLE_NAME = "procapi.exe";
 
@@ -54,10 +55,6 @@ public class ProcessInfoLoader {
         loader.utilListener = utilListener;
     }
 
-    public void setOnProcessesInfoUpdatedListener(OnProcessesInfoUpdatedListener processesListener) {
-        loader.processesListener = processesListener;
-    }
-
     //Here you set up and run processes update service.
     //Use this one to update your UI.
     public void setOnProcessesUpdatedListener(OnProcessesInfoUpdatedListener processesListener) {
@@ -76,7 +73,7 @@ public class ProcessInfoLoader {
 
                         pipe = new ProcessPipe(execPath, "");
                         processesListener
-                                .onProcessesInfoLoaded(
+                                .onProcessesInfoLoaded(//test
                                         parseProcessOutput(pipe.getReader())
                                 );
 
@@ -85,13 +82,6 @@ public class ProcessInfoLoader {
                     }
                 }
                 , 0, SERVICE_PERIOD_MS, TimeUnit.MILLISECONDS);
-    }
-
-    //Additional functionality.
-    //Allows you to receive additional system information.
-    //Pay attention to UtilTask class.
-    public void setOnTaskCompletedListener(OnUtilTaskCompletedListener taskListener) {
-        loader.utilListener = taskListener;
     }
 
     //Run new task
@@ -166,9 +156,7 @@ public class ProcessInfoLoader {
         String line;
 
         while ((line = reader.readLine()) != null) {
-
         }
-
         return null;
     }
 }

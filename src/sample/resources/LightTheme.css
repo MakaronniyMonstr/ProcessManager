@@ -2,6 +2,10 @@
     -fx-background-color: linear-gradient(to top, #bceeff, white);
 }
 
+.background-gre-gradient {
+    -fx-background-color: linear-gradient(to top, #f7f7f7, white);
+}
+
 .background-white {
     -fx-background-color: #ffffff;
  }
@@ -11,8 +15,8 @@
   }
 
 .label {
-    -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 13pt;
+    -fx-font-family: "Segoe UI Light";
     -fx-text-fill: black;
     -fx-opacity: 0.6;
 }
