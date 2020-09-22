@@ -103,13 +103,18 @@ public class ProcessInfoLoader {
         );
     }
 
+    public void destroy() {
+        if (loader.processesUpdateService != null)
+            loader.processesUpdateService.shutdownNow();
+    }
+
     //Parse console output
-    private List<ProcessModifyTask> parseProcessOutput(BufferedReader processReader) throws IOException {
+    private List<ProcessModifyTask> parseProcessOutput(BufferedReader reader) throws IOException {
         List<ProcessModifyTask> processTasksList = new ArrayList<>();
         Map<String, ProcessEntry> processEntriesUpdated = new HashMap<>(loader.processEntries);
         String line;
 
-        while ((line = processReader.readLine()) != null) {
+        while ((line = reader.readLine()) != null) {
             String[] params;
             ProcessEntry process;
 
@@ -148,6 +153,7 @@ public class ProcessInfoLoader {
         loader.processEntries.clear();
         loader.processEntries = processEntriesUpdated;
         processTasksList.sort(ProcessModifyTask::compareTo);
+        reader.close();
 
         return processTasksList;
     }
@@ -165,6 +171,7 @@ public class ProcessInfoLoader {
             else
                 data.add(line);
         }
+        reader.close();
 
         return new UtilTask(data, type);
     }
