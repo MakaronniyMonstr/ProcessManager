@@ -27,9 +27,11 @@ public class Main extends Application {
     public Main()
     {
         ProcessInfoLoader loader = ProcessInfoLoader.getInstance();
-        processEntryList.add(new ProcessEntry("test", 1, 2, 3, "some_path/test.proc"));
-        processEntryList.add(new ProcessEntry("test1", 5, 6, 7, "some_path/test1.proc"));
-        processEntryList.add(new ProcessEntry("test2", 9, 10, 11, "some_path/test2.proc"));
+        processEntryList.add(new ProcessEntry(
+                "test1", 1, "path", 1,
+                "owner", "domain", "SID",
+                "64x", "Native", "ASLR",
+                10, 2));
     }
 
     @Override

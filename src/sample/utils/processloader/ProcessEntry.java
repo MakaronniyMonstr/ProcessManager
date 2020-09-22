@@ -43,6 +43,7 @@ public class ProcessEntry {
             String SID,
             String processType,
             String runtime,
+            String spaceLayout,
             int countThreads,
             int basePriority
             )
@@ -55,6 +56,7 @@ public class ProcessEntry {
         this.ownerDomain = new SimpleStringProperty(ownerDomain);
         this.SID = new SimpleStringProperty(SID);
         this.runtime = new SimpleStringProperty(runtime);
+        this.spaceLayout = new SimpleStringProperty(spaceLayout);
         this.processType = new SimpleStringProperty(processType);
         this.countThreads = new SimpleIntegerProperty(countThreads);
         this.basePriority = new SimpleIntegerProperty(basePriority);
@@ -70,8 +72,8 @@ public class ProcessEntry {
         this.ownerName = new SimpleStringProperty(params[3]);
         this.ownerDomain = new SimpleStringProperty(params[4]);
         this.SID = new SimpleStringProperty(params[5]);
-        this.runtime = new SimpleStringProperty(params[6]);
-        this.processType = new SimpleStringProperty(params[7]);
+        this.processType = new SimpleStringProperty(params[6]);
+        this.spaceLayout = new SimpleStringProperty(params[7]);
         this.countThreads = new SimpleIntegerProperty(Integer.parseInt(params[8]));
         this.basePriority = new SimpleIntegerProperty(Integer.parseInt(params[9]));
     }
@@ -94,7 +96,7 @@ public class ProcessEntry {
         return processName.get();
     }
 
-    public StringProperty processNameProperty() {
+    public StringProperty getProcessNameProperty() {
         return processName;
     }
 
@@ -106,7 +108,7 @@ public class ProcessEntry {
         return processID.get();
     }
 
-    public IntegerProperty processIDProperty() {
+    public IntegerProperty getProcessIDProperty() {
         return processID;
     }
 
@@ -118,7 +120,7 @@ public class ProcessEntry {
         return exePath.get();
     }
 
-    public StringProperty exePathProperty() {
+    public StringProperty getExePathProperty() {
         return exePath;
     }
 
@@ -130,7 +132,7 @@ public class ProcessEntry {
         return parentProcessID.get();
     }
 
-    public IntegerProperty parentProcessIDProperty() {
+    public IntegerProperty getParentProcessIDProperty() {
         return parentProcessID;
     }
 
@@ -142,7 +144,7 @@ public class ProcessEntry {
         return ownerName.get();
     }
 
-    public StringProperty ownerNameProperty() {
+    public StringProperty getOwnerNameProperty() {
         return ownerName;
     }
 
@@ -154,7 +156,7 @@ public class ProcessEntry {
         return ownerDomain.get();
     }
 
-    public StringProperty ownerDomainProperty() {
+    public StringProperty getOwnerDomainProperty() {
         return ownerDomain;
     }
 
@@ -166,7 +168,7 @@ public class ProcessEntry {
         return SID.get();
     }
 
-    public StringProperty SIDProperty() {
+    public StringProperty getSIDProperty() {
         return SID;
     }
 
@@ -178,7 +180,7 @@ public class ProcessEntry {
         return processType.get();
     }
 
-    public StringProperty processTypeProperty() {
+    public StringProperty getProcessTypeProperty() {
         return processType;
     }
 
@@ -190,7 +192,7 @@ public class ProcessEntry {
         return runtime.get();
     }
 
-    public StringProperty runtimeProperty() {
+    public StringProperty getRuntimeProperty() {
         return runtime;
     }
 
@@ -202,7 +204,7 @@ public class ProcessEntry {
         return spaceLayout.get();
     }
 
-    public StringProperty spaceLayoutProperty() {
+    public StringProperty getSpaceLayoutProperty() {
         return spaceLayout;
     }
 
@@ -218,7 +220,7 @@ public class ProcessEntry {
         return basePriority.get();
     }
 
-    public IntegerProperty basePriorityProperty() {
+    public IntegerProperty getBasePriorityProperty() {
         return basePriority;
     }
 
@@ -230,7 +232,7 @@ public class ProcessEntry {
         return countThreads.get();
     }
 
-    public IntegerProperty countThreadsProperty() {
+    public IntegerProperty getCountThreadsProperty() {
         return countThreads;
     }
 

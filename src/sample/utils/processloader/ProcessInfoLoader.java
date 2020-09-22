@@ -9,8 +9,8 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class ProcessInfoLoader {
-    private final int SERVICE_PERIOD_MS = 1500;
     private final String EXECUTABLE_NAME = "procapi.exe";
+    private final int SERVICE_PERIOD_MS = 1500;
 
     private String execPath;
     //Singleton
@@ -23,8 +23,6 @@ public class ProcessInfoLoader {
     private ScheduledExecutorService utilExecuteService;
     //Processes list
     private Map<String, ProcessEntry> processEntries = new HashMap<>();
-    //Task list
-    private BlockingDeque<UtilTask> tasks = new LinkedBlockingDeque<>();
 
     //Updates your UI.
     public interface OnProcessesInfoUpdatedListener {
@@ -64,18 +62,18 @@ public class ProcessInfoLoader {
         loader.processesListener = processesListener;
 
         //Service is already started up
-        if (processesUpdateService != null &&
-                !processesUpdateService.isShutdown())
+        if (loader.processesUpdateService != null &&
+                !loader.processesUpdateService.isShutdown())
             return;
 
-        processesUpdateService = Executors.newSingleThreadScheduledExecutor();
-        processesUpdateService.scheduleAtFixedRate(
+        loader.processesUpdateService = Executors.newSingleThreadScheduledExecutor();
+        loader.processesUpdateService.scheduleAtFixedRate(
                 () -> {
                     try {
                         ProcessPipe pipe;
 
                         pipe = new ProcessPipe(execPath, "");
-                        processesListener
+                        loader.processesListener
                                 .onProcessesInfoLoaded(
                                         parseProcessOutput(pipe.getReader())
                                 );
@@ -99,13 +97,13 @@ public class ProcessInfoLoader {
         if (loader.utilListener == null)
             return;
 
-        utilExecuteService.execute(
+        loader.utilExecuteService.execute(
                 () -> {
                     try {
                         ProcessPipe pipe;
 
-                        pipe = new ProcessPipe(execPath, "");
-                        utilListener
+                        pipe = new ProcessPipe(execPath, task.getStringCommand());
+                        loader.utilListener
                                 .onTaskCompleted(parseTask(pipe.getReader()));
 
                     } catch (IOException e) { e.printStackTrace(); }
@@ -116,7 +114,7 @@ public class ProcessInfoLoader {
     //Parse console output
     private List<ProcessModifyTask> parseProcessOutput(BufferedReader processReader) throws IOException {
         List<ProcessModifyTask> processTasksList = new ArrayList<>();
-        Map<String, ProcessEntry> processEntriesUpdated = new HashMap<>(processEntries);
+        Map<String, ProcessEntry> processEntriesUpdated = new HashMap<>(loader.processEntries);
         String line;
 
         while ((line = processReader.readLine()) != null) {
@@ -145,7 +143,7 @@ public class ProcessInfoLoader {
         }
 
         //Compare new and old processes maps to find difference and remove processes
-        processEntries.forEach((key, value) -> {
+        loader.processEntries.forEach((key, value) -> {
             if (!processEntriesUpdated.containsValue(key)) {
                 processTasksList.add(new ProcessModifyTask(
                         value,
@@ -155,20 +153,27 @@ public class ProcessInfoLoader {
         });
 
         //Update processes map
-        processEntries.clear();
-        processEntries = processEntriesUpdated;
+        loader.processEntries.clear();
+        loader.processEntries = processEntriesUpdated;
         processTasksList.sort(ProcessModifyTask::compareTo);
 
         return processTasksList;
     }
 
     private UtilTask parseTask(BufferedReader reader) throws IOException {
+        int type = -1;
         String line;
+        List<String> data = new LinkedList<>();
 
         while ((line = reader.readLine()) != null) {
-
+            //Uninitialized response type
+            if (type == -1)
+                type = line.charAt(0);
+            //Adding console output data
+            else
+                data.add(line);
         }
 
-        return null;
+        return new UtilTask(data, type);
     }
 }
