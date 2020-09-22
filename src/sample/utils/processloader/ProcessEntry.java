@@ -71,10 +71,10 @@ public class ProcessEntry {
         this.ownerDomain = new SimpleStringProperty(params[5]);
         this.SID = new SimpleStringProperty(params[6]);
         this.processType = new SimpleStringProperty(params[7]);
-        this.runtime = new SimpleStringProperty(params[8]);
+        this.spaceLayout = new SimpleStringProperty(params[8]);
         this.countThreads = new SimpleIntegerProperty(Integer.parseInt(params[9]));
         this.basePriority = new SimpleIntegerProperty(Integer.parseInt(params[10]));
-        this.spaceLayout = new SimpleStringProperty("UNKNOWN");
+        this.runtime = new SimpleStringProperty("UNKNOWN");
     }
 
     public void update(ProcessEntry pe) {
