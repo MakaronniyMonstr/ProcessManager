@@ -12,6 +12,14 @@ public class ProcessModifyTask implements Comparable<ProcessModifyTask> {
         this.type = type;
     }
 
+    public int getType() {
+        return type;
+    }
+
+    public ProcessEntry getProcessEntry() {
+        return processEntry;
+    }
+
     @Override
     public int compareTo(ProcessModifyTask o) {
         return ((Integer)this.processEntry.getProcessID())
