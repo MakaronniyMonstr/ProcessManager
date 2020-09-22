@@ -63,6 +63,7 @@ public class ProcessEntry {
     }
 
     public ProcessEntry(String[] params) {
+
         this.processName = new SimpleStringProperty(
                 params[1].substring(params[1].lastIndexOf('\\'))
         );

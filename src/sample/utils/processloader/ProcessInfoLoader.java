@@ -37,7 +37,7 @@ public class ProcessInfoLoader {
     private ProcessInfoLoader() {
         execPath = Paths.get("")
                 .toAbsolutePath()
-                .toString() + EXECUTABLE_NAME;
+                .toString() + "\\" + EXECUTABLE_NAME;
     }
 
     public static ProcessInfoLoader getInstance() {
@@ -71,7 +71,10 @@ public class ProcessInfoLoader {
                     try {
                         ProcessPipe pipe;
 
-                        pipe = new ProcessPipe(execPath, "");
+                        pipe = new ProcessPipe(
+                                execPath,
+                                UtilTask.commandToString(UtilTask.GET_PROCESSES_LIST)
+                                );
                         loader.processesListener
                                 .onProcessesInfoLoaded(
                                         parseProcessOutput(pipe.getReader())

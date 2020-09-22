@@ -17,7 +17,7 @@ public class UtilTask {
     public static final int GET_FILE_INTEGRITY_LEVEL    = 0xA;
     public static final int SET_FILE_INTEGRITY_LEVEL    = 0xB;
 
-    private String stringCommands[] = {
+    private static String stringCommands[] = {
             "-pl",
             "-ml",
             "-pip",
@@ -44,6 +44,10 @@ public class UtilTask {
         this.data = new LinkedList<>();
         this.data.add(data);
         this.command = command;
+    }
+
+    public static String commandToString(int command) {
+        return stringCommands[command];
     }
 
     public int getCommand() {

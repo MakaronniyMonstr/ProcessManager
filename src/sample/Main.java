@@ -15,10 +15,12 @@ import sample.controllers.DialogController;
 import sample.controllers.MainController;
 import sample.utils.processloader.ProcessEntry;
 import sample.utils.processloader.ProcessInfoLoader;
+import sample.utils.processloader.ProcessModifyTask;
 
 import java.io.IOException;
+import java.util.List;
 
-public class Main extends Application {
+public class Main extends Application implements ProcessInfoLoader.OnProcessesInfoUpdatedListener {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
@@ -27,6 +29,9 @@ public class Main extends Application {
     public Main()
     {
         ProcessInfoLoader loader = ProcessInfoLoader.getInstance();
+
+        loader.setOnProcessesUpdatedListener(this);
+
         processEntryList.add(new ProcessEntry(
                 "test1", 1, "path", 1,
                 "owner", "domain", "SID",
@@ -125,5 +130,10 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void onProcessesInfoLoaded(List<ProcessModifyTask> processModifyTasks) {
+        System.out.println("Hello");
     }
 }
