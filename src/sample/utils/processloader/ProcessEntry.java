@@ -63,20 +63,18 @@ public class ProcessEntry {
     }
 
     public ProcessEntry(String[] params) {
-
-        this.processName = new SimpleStringProperty(
-                params[1].substring(params[1].lastIndexOf('\\'))
-        );
-        this.processID = new SimpleIntegerProperty(Integer.parseInt(params[0]));
-        this.exePath = new SimpleStringProperty(params[1]);
-        this.parentProcessID = new SimpleIntegerProperty(Integer.parseInt(params[2]));
-        this.ownerName = new SimpleStringProperty(params[3]);
-        this.ownerDomain = new SimpleStringProperty(params[4]);
-        this.SID = new SimpleStringProperty(params[5]);
-        this.processType = new SimpleStringProperty(params[6]);
-        this.spaceLayout = new SimpleStringProperty(params[7]);
-        this.countThreads = new SimpleIntegerProperty(Integer.parseInt(params[8]));
-        this.basePriority = new SimpleIntegerProperty(Integer.parseInt(params[9]));
+        this.processName = new SimpleStringProperty(params[0]);
+        this.processID = new SimpleIntegerProperty(Integer.parseInt(params[1]));
+        this.exePath = new SimpleStringProperty(params[2]);
+        this.parentProcessID = new SimpleIntegerProperty(Integer.parseInt(params[3]));
+        this.ownerName = new SimpleStringProperty(params[4]);
+        this.ownerDomain = new SimpleStringProperty(params[5]);
+        this.SID = new SimpleStringProperty(params[6]);
+        this.processType = new SimpleStringProperty(params[7]);
+        this.runtime = new SimpleStringProperty(params[8]);
+        this.countThreads = new SimpleIntegerProperty(Integer.parseInt(params[9]));
+        this.basePriority = new SimpleIntegerProperty(Integer.parseInt(params[10]));
+        this.spaceLayout = new SimpleStringProperty("UNKNOWN");
     }
 
     public void update(ProcessEntry pe) {
@@ -93,16 +91,24 @@ public class ProcessEntry {
         this.basePriority.setValue(pe.getBasePriority());
     }
 
+    public void setBasePriority(int basePriority) {
+        this.basePriority.setValue(basePriority);
+    }
+
+    public void setExePath(String path) {
+        this.exePath.setValue(path);
+    }
+
+    public void setProcessName(String name) {
+        this.processName.setValue(name);
+    }
+
     public String getProcessName() {
         return processName.get();
     }
 
     public StringProperty getProcessNameProperty() {
         return processName;
-    }
-
-    public void setProcessName(String processName) {
-        this.processName.set(processName);
     }
 
     public int getProcessID() {
@@ -113,20 +119,12 @@ public class ProcessEntry {
         return processID;
     }
 
-    public void setProcessID(int processID) {
-        this.processID.set(processID);
-    }
-
     public String getExePath() {
         return exePath.get();
     }
 
     public StringProperty getExePathProperty() {
         return exePath;
-    }
-
-    public void setExePath(String exePath) {
-        this.exePath.set(exePath);
     }
 
     public int getParentProcessID() {
@@ -137,20 +135,12 @@ public class ProcessEntry {
         return parentProcessID;
     }
 
-    public void setParentProcessID(int parentProcessID) {
-        this.parentProcessID.set(parentProcessID);
-    }
-
     public String getOwnerName() {
         return ownerName.get();
     }
 
     public StringProperty getOwnerNameProperty() {
         return ownerName;
-    }
-
-    public void setOwnerName(String ownerName) {
-        this.ownerName.set(ownerName);
     }
 
     public String getOwnerDomain() {
@@ -161,10 +151,6 @@ public class ProcessEntry {
         return ownerDomain;
     }
 
-    public void setOwnerDomain(String ownerDomain) {
-        this.ownerDomain.set(ownerDomain);
-    }
-
     public String getSID() {
         return SID.get();
     }
@@ -173,20 +159,8 @@ public class ProcessEntry {
         return SID;
     }
 
-    public void setSID(String SID) {
-        this.SID.set(SID);
-    }
-
     public String getProcessType() {
         return processType.get();
-    }
-
-    public StringProperty getProcessTypeProperty() {
-        return processType;
-    }
-
-    public void setProcessType(String processType) {
-        this.processType.set(processType);
     }
 
     public String getRuntime() {
@@ -197,24 +171,12 @@ public class ProcessEntry {
         return runtime;
     }
 
-    public void setRuntime(String runtime) {
-        this.runtime.set(runtime);
-    }
-
     public String getSpaceLayout() {
         return spaceLayout.get();
     }
 
     public StringProperty getSpaceLayoutProperty() {
         return spaceLayout;
-    }
-
-    public void setSpaceLayout(String spaceLayout) {
-        this.spaceLayout.set(spaceLayout);
-    }
-
-    public void setModuleEntries(List<ModuleEntry> moduleEntries) {
-        this.moduleEntries = moduleEntries;
     }
 
     public int getBasePriority() {
@@ -225,20 +187,12 @@ public class ProcessEntry {
         return basePriority;
     }
 
-    public void setBasePriority(int basePriority) {
-        this.basePriority.set(basePriority);
-    }
-
     public int getCountThreads() {
         return countThreads.get();
     }
 
     public IntegerProperty getCountThreadsProperty() {
         return countThreads;
-    }
-
-    public void setCountThreads(int countThreads) {
-        this.countThreads.set(countThreads);
     }
 
     public void addModule(ModuleEntry moduleEntry) {
@@ -255,15 +209,52 @@ public class ProcessEntry {
         if (o == null || getClass() != o.getClass()) return false;
         ProcessEntry that = (ProcessEntry) o;
 
-        return processName.equals(that.processName) &&
-                processID.equals(that.processID) &&
-                parentProcessID.equals(that.parentProcessID) &&
-                basePriority.equals(that.basePriority) &&
-                exePath.equals(that.exePath);
+        return processName.get().equals(that.processName.get()) &&
+                processID.get() == that.processID.get() &&
+                exePath.get().equals(exePath.get()) &&
+                parentProcessID.get() == that.parentProcessID.get() &&
+                ownerName.get().equals(that.ownerName.get()) &&
+                ownerDomain.get().equals(that.ownerDomain.get()) &&
+                SID.get().equals(that.SID.get()) &&
+                processType.get().equals(that.processType.get()) &&
+                runtime.get().equals(that.runtime.get()) &&
+                spaceLayout.get().equals(that.spaceLayout.get()) &&
+                basePriority.get() == that.basePriority.get() &&
+                countThreads.get() == that.countThreads.get();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(processName, processID, parentProcessID, basePriority, exePath);
+        return Objects.hash(
+                processName.get(),
+                processID.get(),
+                exePath.get(),
+                parentProcessID.get(),
+                ownerName.get(),
+                ownerDomain.get(),
+                SID.get(),
+                processType.get(),
+                runtime.get(),
+                spaceLayout.get(),
+                basePriority.get(),
+                countThreads.get());
+    }
+
+    public boolean isUpdated(ProcessEntry processEntry) {
+        if (processEntry == null)
+            return false;
+
+        return processName.get().equals(processEntry.processName.get()) &&
+                processID.get() == processEntry.processID.get() &&
+                exePath.get().equals(exePath.get()) &&
+                parentProcessID.get() == processEntry.parentProcessID.get() &&
+                ownerName.get().equals(processEntry.ownerName.get()) &&
+                ownerDomain.get().equals(processEntry.ownerDomain.get()) &&
+                SID.get().equals(processEntry.SID.get()) &&
+                processType.get().equals(processEntry.processType.get()) &&
+                runtime.get().equals(processEntry.runtime.get()) &&
+                spaceLayout.get().equals(processEntry.spaceLayout.get()) &&
+                (basePriority.get() != processEntry.basePriority.get() ||
+                countThreads.get() != processEntry.countThreads.get());
     }
 }

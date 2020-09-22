@@ -1,5 +1,6 @@
 package sample.utils.processloader;
 
+import sample.utils.customlist.UpdatingArrayList;
 import sample.utils.processpipe.ProcessPipe;
 
 import java.io.BufferedReader;
@@ -22,7 +23,7 @@ public class ProcessInfoLoader {
     private ScheduledExecutorService processesUpdateService;
     private ScheduledExecutorService utilExecuteService;
     //Processes list
-    private Map<String, ProcessEntry> processEntries = new HashMap<>();
+    private UpdatingArrayList processEntries = new UpdatingArrayList();
 
     //Updates your UI.
     public interface OnProcessesInfoUpdatedListener {
@@ -114,47 +115,44 @@ public class ProcessInfoLoader {
     //Parse console output
     private List<ProcessModifyTask> parseProcessOutput(BufferedReader reader) throws IOException {
         List<ProcessModifyTask> processTasksList = new ArrayList<>();
-        Map<String, ProcessEntry> processEntriesUpdated = new HashMap<>(loader.processEntries);
+        UpdatingArrayList processEntriesUpdated = new UpdatingArrayList();
         String line;
 
         while ((line = reader.readLine()) != null) {
             String[] params;
             ProcessEntry process;
+            int index;
+            System.out.println(line);
 
             params = line.split(" ");
             process = new ProcessEntry(params);
 
-            //Process is already in the map
-            if (processEntriesUpdated.containsKey(process.getProcessName())) {
-                //Process has the same name and some new data.
-                //Update process data to the map.
-                if (!processEntriesUpdated.containsValue(process)) {
-                    processEntriesUpdated.get(process.getProcessName()).update(process);
+            processEntriesUpdated.add(process);
+            //Process is already in the list
+            if (!loader.processEntries.contains(process)) {
+                if (!loader.processEntries.updated(process)) {
+                    processTasksList.add(new ProcessModifyTask(
+                            process,
+                            ProcessModifyTask.ADD
+                    ));
                 }
-            }
-            //Absolutely new process
-            else {
-                processEntriesUpdated.put(process.getProcessName(), process);
-                processTasksList.add(new ProcessModifyTask(
-                        process,
-                        ProcessModifyTask.ADD
-                ));
             }
         }
 
         //Compare new and old processes maps to find difference and remove processes
-        loader.processEntries.forEach((key, value) -> {
-            if (!processEntriesUpdated.containsValue(key)) {
-                processTasksList.add(new ProcessModifyTask(
-                        value,
-                        ProcessModifyTask.REMOVE
-                ));
-            }
+        processEntries.removeAll(processEntriesUpdated);
+        processEntries.forEach(processEntry -> {
+            processTasksList.add(
+                    new ProcessModifyTask(processEntry,
+                    ProcessModifyTask.REMOVE)
+            );
         });
 
         //Update processes map
         loader.processEntries.clear();
-        loader.processEntries = processEntriesUpdated;
+        loader.processEntries.addAll(processEntriesUpdated);
+        processEntriesUpdated.clear();
+
         processTasksList.sort(ProcessModifyTask::compareTo);
         reader.close();
 
