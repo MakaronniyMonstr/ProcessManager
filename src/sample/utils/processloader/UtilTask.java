@@ -50,10 +50,6 @@ public class UtilTask {
         this.command = command;
     }
 
-    public static String commandToString(int command) {
-        return stringCommands[command];
-    }
-
     public int getCommand() {
         return command;
     }
