@@ -1,6 +1,7 @@
 package sample.controllers;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -54,8 +55,8 @@ public class MainController {
     @FXML
     private void initialize() {
         // Инициализация таблицы адресатов с двумя столбцами.
-        firstColumn.setCellValueFactory(cellData -> cellData.getValue().getProcessNameProperty());
-        thirdColumn.setCellValueFactory(cellData -> cellData.getValue().getExePathProperty());
+        firstColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProcessName()));
+        thirdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExePath()));
 
         showProcessDetails(null);
 

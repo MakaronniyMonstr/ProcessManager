@@ -116,25 +116,34 @@ public class ProcessInfoLoader {
     private List<ProcessModifyTask> parseProcessOutput(BufferedReader reader) throws IOException {
         List<ProcessModifyTask> processTasksList = new ArrayList<>();
         UpdatingArrayList processEntriesUpdated = new UpdatingArrayList();
+        LinkedList<String> params = new LinkedList<>();
         String line;
 
         while ((line = reader.readLine()) != null) {
-            String[] params;
-            ProcessEntry process;
-            int index;
-            System.out.println(line);
 
-            params = line.split(" ");
-            process = new ProcessEntry(params);
+            if (!line.isEmpty()) {
+                params.offer(line);
+            }
+            else {
+                ProcessEntry process;
+                //Debug info
+                params.forEach(s -> System.out.print(s + " "));
+                System.out.println();
 
-            processEntriesUpdated.add(process);
-            //Process is already in the list
-            if (!loader.processEntries.contains(process)) {
-                if (!loader.processEntries.updated(process)) {
-                    processTasksList.add(new ProcessModifyTask(
-                            process,
-                            ProcessModifyTask.ADD
-                    ));
+                process = new ProcessEntry(params);
+                params.clear();
+
+                processEntriesUpdated.add(process);
+                //Process is already in the list
+                if (!loader.processEntries.contains(process)) {
+                    if (!loader.processEntries.updated(process)) {
+                        processTasksList.add(new ProcessModifyTask(
+                                process,
+                                ProcessModifyTask.ADD
+                        ));
+                    } else {
+
+                    }
                 }
             }
         }
