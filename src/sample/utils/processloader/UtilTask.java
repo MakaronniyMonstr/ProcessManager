@@ -40,6 +40,10 @@ public class UtilTask {
         this.command = command;
     }
 
+    public static String commandToString(int command) {
+        return stringCommands[command];
+    }
+
     public UtilTask(int command, String data) {
         this.data = new LinkedList<>();
         this.data.add(data);
