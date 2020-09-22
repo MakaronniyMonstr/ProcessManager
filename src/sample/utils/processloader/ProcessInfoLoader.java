@@ -48,12 +48,11 @@ public class ProcessInfoLoader {
         return loader;
     }
 
+    //Additional functionality.
+    //Allows you to receive additional system information.
+    //Pay attention to UtilTask class.
     public void setOnUtilTaskCompletedListener(OnUtilTaskCompletedListener utilListener) {
         loader.utilListener = utilListener;
-    }
-
-    public void setOnProcessesInfoUpdatedListener(OnProcessesInfoUpdatedListener processesListener) {
-        loader.processesListener = processesListener;
     }
 
     //Here you set up and run processes update service.
@@ -83,13 +82,6 @@ public class ProcessInfoLoader {
                     }
                 }
                 , 0, SERVICE_PERIOD_MS, TimeUnit.MILLISECONDS);
-    }
-
-    //Additional functionality.
-    //Allows you to receive additional system information.
-    //Pay attention to UtilTask class.
-    public void setOnTaskCompletedListener(OnUtilTaskCompletedListener taskListener) {
-        loader.utilListener = taskListener;
     }
 
     //Run new task
