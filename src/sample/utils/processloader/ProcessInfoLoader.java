@@ -37,7 +37,7 @@ public class ProcessInfoLoader {
     private ProcessInfoLoader() {
         execPath = Paths.get("")
                 .toAbsolutePath()
-                .toString() + EXECUTABLE_NAME;
+                .toString() + "\\" + EXECUTABLE_NAME;
     }
 
     public static ProcessInfoLoader getInstance() {
@@ -68,18 +68,21 @@ public class ProcessInfoLoader {
         loader.processesUpdateService = Executors.newSingleThreadScheduledExecutor();
         loader.processesUpdateService.scheduleAtFixedRate(
                 () -> {
-                    //try {
+                    try {
                         ProcessPipe pipe;
 
-                        //pipe = new ProcessPipe(execPath, "");
+                        pipe = new ProcessPipe(
+                                execPath,
+                                UtilTask.commandToString(UtilTask.GET_PROCESSES_LIST)
+                                );
                         loader.processesListener
                                 .onProcessesInfoLoaded(
-                                        /*parseProcessOutput(pipe.getReader())*/testStructure()
+                                        parseProcessOutput(pipe.getReader())
                                 );
 
-                    //} catch (IOException e) {
-                    //    e.printStackTrace();
-                    //}
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 , 0, SERVICE_PERIOD_MS, TimeUnit.MILLISECONDS);
     }
@@ -103,27 +106,18 @@ public class ProcessInfoLoader {
         );
     }
 
-    List<ProcessModifyTask> testStructure()
-    {
-        List<ProcessModifyTask> test = new ArrayList<>();
-
-        test.add(new ProcessModifyTask(
-                new ProcessEntry("test1", 1, "path", 1,
-                "owner", "domain", "SID",
-                "64x", "Native", "ASLR",
-                10, 2),
-                0));
-
-        return test;
+    public void destroy() {
+        if (loader.processesUpdateService != null)
+            loader.processesUpdateService.shutdownNow();
     }
 
     //Parse console output
-    private List<ProcessModifyTask> parseProcessOutput(BufferedReader processReader) throws IOException {
+    private List<ProcessModifyTask> parseProcessOutput(BufferedReader reader) throws IOException {
         List<ProcessModifyTask> processTasksList = new ArrayList<>();
         Map<String, ProcessEntry> processEntriesUpdated = new HashMap<>(loader.processEntries);
         String line;
 
-        while ((line = processReader.readLine()) != null) {
+        while ((line = reader.readLine()) != null) {
             String[] params;
             ProcessEntry process;
 
@@ -162,6 +156,7 @@ public class ProcessInfoLoader {
         loader.processEntries.clear();
         loader.processEntries = processEntriesUpdated;
         processTasksList.sort(ProcessModifyTask::compareTo);
+        reader.close();
 
         return processTasksList;
     }
@@ -179,6 +174,7 @@ public class ProcessInfoLoader {
             else
                 data.add(line);
         }
+        reader.close();
 
         return new UtilTask(data, type);
     }
