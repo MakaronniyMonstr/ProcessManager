@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.application.Application;
@@ -11,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import sample.controllers.DialogController;
 import sample.controllers.MainController;
 import sample.utils.processloader.ProcessEntry;
@@ -22,10 +24,10 @@ import java.util.List;
 
 public class Main extends Application implements ProcessInfoLoader.OnProcessesInfoUpdatedListener {
 
+    ProcessInfoLoader loader;
     private Stage primaryStage;
     private BorderPane rootLayout;
     private ObservableList<ProcessEntry> processEntryList = FXCollections.observableArrayList();
-    ProcessInfoLoader loader;
 
     public Main()
     {
@@ -42,6 +44,13 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
 
         initRootLayout();
         showProcessOverview();
+
+        this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                loader.destroy();
+            }
+        });
     }
 
     public void initRootLayout()
