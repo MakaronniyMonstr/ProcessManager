@@ -35,7 +35,7 @@ public class DialogController {
 
         //поменять на то, что должно быть
         intLevelField.setText(Integer.toString(processEntry.getBasePriority()));
-        fileOwnerField.setText(processEntry.getExePath());
+        fileOwnerField.setText(processEntry.getOwnerName());
         aclField.setText(processEntry.getProcessName());
     }
 

@@ -14,7 +14,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
 import sample.controllers.DialogController;
 import sample.controllers.MainController;
 import sample.utils.processloader.ProcessEntry;
@@ -69,6 +68,7 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
                     yOffset = primaryStage.getY() - event.getScreenY();
                 }
             });
+
             scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -137,7 +137,6 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
 
     public void  closeApplication()
     {
-        //primaryStage.close();
         loader.destroy();
         Platform.exit();
         System.exit(0);
@@ -166,19 +165,9 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
         for (ProcessModifyTask process : processModifyTasks)
         {
             if (process.getType() == process.ADD)
-            {
                 processEntryList.add(process.getProcessEntry());
-            }
             else
-            {
-                for (ProcessEntry searchProcess: processEntryList) {
-
-                    if (searchProcess.getProcessName().equals(process.getProcessEntry().getProcessName())) {
-                        processEntryList.remove(searchProcess);
-                    }
-                }
-
-            }
+                processEntryList.remove(process);
         }
 
     }

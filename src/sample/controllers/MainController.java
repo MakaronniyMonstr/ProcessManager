@@ -23,6 +23,8 @@ public class MainController {
     @FXML
     private Label parentIDLabel;
     @FXML
+    private Label parentNameLabel;
+    @FXML
     private Label pidLabel;
     @FXML
     private Label typeLabel;
@@ -33,7 +35,7 @@ public class MainController {
     @FXML
     private Label dllLibsLabel;
     @FXML
-    private Label subInfoLabel;
+    private Label sidLabel;
     @FXML
     private Label intLevelLabel;
     @FXML
@@ -73,25 +75,27 @@ public class MainController {
         if (processEntry != null) {
             // Заполняем метки информацией из объекта person.
             parentIDLabel.setText(Integer.toString(processEntry.getParentProcessID()));
+            parentNameLabel.setText(processEntry.getOwnerDomain());
             pidLabel.setText(Integer.toString(processEntry.getProcessID()));
-            typeLabel.setText("no");
-            runEnvLabel.setText("no");
-            depLabel.setText("no");
-            subInfoLabel.setText("no");
+            typeLabel.setText(processEntry.getProcessType());
+            runEnvLabel.setText(processEntry.getRuntime());
+            depLabel.setText(processEntry.getSpaceLayout());
+            sidLabel.setText(processEntry.getSID());
             intLevelLabel.setText("no");
-            privilegesLabel.setText(Integer.toString(processEntry.getBasePriority()));
+            privilegesLabel.setText("no");
             aclLabel.setText("no");
-            fileOwnerLabel.setText("no");
+            fileOwnerLabel.setText(processEntry.getOwnerName());
 
         } else {
 
             parentIDLabel.setText("");
+            parentNameLabel.setText("");
             pidLabel.setText("");
             typeLabel.setText("");
             runEnvLabel.setText("");
             depLabel.setText("");
             dllLibsLabel.setText("");
-            subInfoLabel.setText("");
+            sidLabel.setText("");
             intLevelLabel.setText("");
             privilegesLabel.setText("");
             aclLabel.setText("");
@@ -99,10 +103,6 @@ public class MainController {
         }
     }
 
-    /**
-     * Вызывается, когда пользователь кликает по кнопка Edit...
-     * Открывает диалоговое окно для изменения выбранного адресата.
-     */
     @FXML
     private void handleEditPerson() {
         ProcessEntry selectedProcess = processTable.getSelectionModel().getSelectedItem();

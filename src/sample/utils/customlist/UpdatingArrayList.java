@@ -14,7 +14,6 @@ public class UpdatingArrayList extends ArrayList<ProcessEntry> {
                     return true;
                 }
         }
-
         return false;
     }
 }
