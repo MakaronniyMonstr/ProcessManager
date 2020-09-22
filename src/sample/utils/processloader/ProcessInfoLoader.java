@@ -68,18 +68,18 @@ public class ProcessInfoLoader {
         loader.processesUpdateService = Executors.newSingleThreadScheduledExecutor();
         loader.processesUpdateService.scheduleAtFixedRate(
                 () -> {
-                    try {
+                    //try {
                         ProcessPipe pipe;
 
-                        pipe = new ProcessPipe(execPath, "");
+                        //pipe = new ProcessPipe(execPath, "");
                         loader.processesListener
                                 .onProcessesInfoLoaded(
-                                        parseProcessOutput(pipe.getReader())
+                                        /*parseProcessOutput(pipe.getReader())*/testStructure()
                                 );
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    //} catch (IOException e) {
+                    //    e.printStackTrace();
+                    //}
                 }
                 , 0, SERVICE_PERIOD_MS, TimeUnit.MILLISECONDS);
     }
@@ -101,6 +101,20 @@ public class ProcessInfoLoader {
                     } catch (IOException e) { e.printStackTrace(); }
                 }
         );
+    }
+
+    List<ProcessModifyTask> testStructure()
+    {
+        List<ProcessModifyTask> test = new ArrayList<>();
+
+        test.add(new ProcessModifyTask(
+                new ProcessEntry("test1", 1, "path", 1,
+                "owner", "domain", "SID",
+                "64x", "Native", "ASLR",
+                10, 2),
+                0));
+
+        return test;
     }
 
     //Parse console output
