@@ -7,6 +7,11 @@ public class ProcessPipe {
     private BufferedReader reader;
     private BufferedWriter writer;
 
+    public enum ExitCodes {
+        SUCCEEDED,
+        ERROR,
+    }
+
     public ProcessPipe(String exePath, String arg) throws IOException {
         this.process = Runtime.getRuntime().exec(exePath + " " + arg);
     }
@@ -31,13 +36,16 @@ public class ProcessPipe {
         return writer;
     }
 
-    public void waitFor() throws InterruptedException {
+    public int waitFor() throws InterruptedException {
         process.waitFor();
+        return process.exitValue();
     }
 
-    public void destroy() {
+    public void destroy() throws IOException {
         assert process != null;
 
         process.destroyForcibly();
+        writer.close();
+        reader.close();
     }
 }

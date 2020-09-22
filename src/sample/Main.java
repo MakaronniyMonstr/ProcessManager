@@ -14,6 +14,7 @@ import javafx.stage.StageStyle;
 import sample.controllers.DialogController;
 import sample.controllers.MainController;
 import sample.utils.processloader.ProcessEntry;
+import sample.utils.processloader.ProcessInfoLoader;
 
 import java.io.IOException;
 
@@ -25,9 +26,10 @@ public class Main extends Application {
 
     public Main()
     {
-        processEntryList.add(new ProcessEntry("test", 1, 2, 3, 4, "some_path/test.proc"));
-        processEntryList.add(new ProcessEntry("test1", 5, 6, 7, 8, "some_path/test1.proc"));
-        processEntryList.add(new ProcessEntry("test2", 9, 10, 11, 12, "some_path/test2.proc"));
+        ProcessInfoLoader loader = ProcessInfoLoader.getInstance();
+        processEntryList.add(new ProcessEntry("test", 1, 2, 3, "some_path/test.proc"));
+        processEntryList.add(new ProcessEntry("test1", 5, 6, 7, "some_path/test1.proc"));
+        processEntryList.add(new ProcessEntry("test2", 9, 10, 11, "some_path/test2.proc"));
     }
 
     @Override

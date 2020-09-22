@@ -75,7 +75,6 @@ public class MainController {
             typeLabel.setText("no");
             runEnvLabel.setText("no");
             depLabel.setText("no");
-            dllLibsLabel.setText(Integer.toString(processEntry.getModuleID()));
             subInfoLabel.setText("no");
             intLevelLabel.setText("no");
             privilegesLabel.setText(Integer.toString(processEntry.getBasePriority()));

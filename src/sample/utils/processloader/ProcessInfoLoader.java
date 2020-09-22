@@ -1,42 +1,48 @@
 package sample.utils.processloader;
 
+import sample.utils.processpipe.ProcessPipe;
+
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.concurrent.*;
 
 public class ProcessInfoLoader {
+    private final int SERVICE_PERIOD_MS = 1500;
     private final String EXECUTABLE_NAME = "procapi.exe";
 
+    private String execPath;
+    //Singleton
     private static ProcessInfoLoader loader;
-
     //Listeners
     private OnProcessesInfoUpdatedListener processesListener;
-    private OnModuleInfoLoadedListener moduleListener;
-
+    private OnUtilTaskCompletedListener utilListener;
     //Service threads
     private ScheduledExecutorService processesUpdateService;
-    private ScheduledExecutorService moduleLoadService;
-
+    private ScheduledExecutorService utilExecuteService;
     //Processes list
-    private HashSet<ProcessEntry> processEntries = new HashSet<>();
-
+    private Map<String, ProcessEntry> processEntries = new HashMap<>();
     //Task list
-    private BlockingDeque<EntryTask> tasks = new LinkedBlockingDeque<>();
+    private BlockingDeque<UtilTask> tasks = new LinkedBlockingDeque<>();
 
+    //Updates your UI.
     public interface OnProcessesInfoUpdatedListener {
-        void onProcessesInfoLoaded(List<ProcessEntry> processEntries);
+        void onProcessesInfoLoaded(List<ProcessModifyTask> processModifyTasks);
     }
 
-    public interface OnModuleInfoLoadedListener {
-        void onModuleInfoLoaded(ProcessEntry processEntry);
+    //Updates your UI.
+    public interface OnUtilTaskCompletedListener {
+        void onTaskCompleted(UtilTask task);
     }
 
+    private ProcessInfoLoader() {
+        execPath = Paths.get("")
+                .toAbsolutePath()
+                .toString() + EXECUTABLE_NAME;
+    }
 
-    private ProcessInfoLoader() {}
-
-    public ProcessInfoLoader getInstance() {
+    public static ProcessInfoLoader getInstance() {
         if (loader == null) {
             loader = new ProcessInfoLoader();
         }
@@ -44,50 +50,125 @@ public class ProcessInfoLoader {
         return loader;
     }
 
-    public void addOnProcessesUpdatedListener(OnProcessesInfoUpdatedListener processesListener) {
+    public void setOnUtilTaskCompletedListener(OnUtilTaskCompletedListener utilListener) {
+        loader.utilListener = utilListener;
+    }
+
+    public void setOnProcessesInfoUpdatedListener(OnProcessesInfoUpdatedListener processesListener) {
+        loader.processesListener = processesListener;
+    }
+
+    //Here you set up and run processes update service.
+    //Use this one to update your UI.
+    public void setOnProcessesUpdatedListener(OnProcessesInfoUpdatedListener processesListener) {
         loader.processesListener = processesListener;
 
+        //Service is already started up
         if (processesUpdateService != null &&
-                !processesUpdateService.isTerminated()) {
-            processesUpdateService.shutdownNow();
-        }
+                !processesUpdateService.isShutdown())
+            return;
 
         processesUpdateService = Executors.newSingleThreadScheduledExecutor();
         processesUpdateService.scheduleAtFixedRate(
                 () -> {
-                    processesListener.onProcessesInfoLoaded(null);
+                    try {
+                        ProcessPipe pipe;
+
+                        pipe = new ProcessPipe(execPath, "");
+                        processesListener
+                                .onProcessesInfoLoaded(
+                                        parseProcessOutput(pipe.getReader())
+                                );
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-                , 0, 500, TimeUnit.MILLISECONDS);
+                , 0, SERVICE_PERIOD_MS, TimeUnit.MILLISECONDS);
     }
 
-    public void addOnModuleLoadedListener(OnModuleInfoLoadedListener moduleListener) {
-        loader.moduleListener = moduleListener;
+    //Additional functionality.
+    //Allows you to receive additional system information.
+    //Pay attention to UtilTask class.
+    public void setOnTaskCompletedListener(OnUtilTaskCompletedListener taskListener) {
+        loader.utilListener = taskListener;
     }
 
-    public void loadProcessModules() {
-        moduleLoadService.execute(
+    //Run new task
+    public void runNewTask(UtilTask task) {
+        if (loader.utilListener == null)
+            return;
+
+        utilExecuteService.execute(
                 () -> {
-                    moduleListener.onModuleInfoLoaded(null);
+                    try {
+                        ProcessPipe pipe;
+
+                        pipe = new ProcessPipe(execPath, "");
+                        utilListener
+                                .onTaskCompleted(parseTask(pipe.getReader()));
+
+                    } catch (IOException e) { e.printStackTrace(); }
                 }
         );
     }
 
-    public EntryTask getTask() {
-        return tasks.poll();
+    //Parse console output
+    private List<ProcessModifyTask> parseProcessOutput(BufferedReader processReader) throws IOException {
+        List<ProcessModifyTask> processTasksList = new ArrayList<>();
+        Map<String, ProcessEntry> processEntriesUpdated = new HashMap<>(processEntries);
+        String line;
+
+        while ((line = processReader.readLine()) != null) {
+            String[] params;
+            ProcessEntry process;
+
+            params = line.split(" ");
+            process = new ProcessEntry(params);
+
+            //Process is already in the map
+            if (processEntriesUpdated.containsKey(process.getProcessName())) {
+                //Process has the same name and some new data.
+                //Update process data to the map.
+                if (!processEntriesUpdated.containsValue(process)) {
+                    processEntriesUpdated.get(process.getProcessName()).update(process);
+                }
+            }
+            //Absolutely new process
+            else {
+                processEntriesUpdated.put(process.getProcessName(), process);
+                processTasksList.add(new ProcessModifyTask(
+                        process,
+                        ProcessModifyTask.ADD
+                ));
+            }
+        }
+
+        //Compare new and old processes maps to find difference and remove processes
+        processEntries.forEach((key, value) -> {
+            if (!processEntriesUpdated.containsValue(key)) {
+                processTasksList.add(new ProcessModifyTask(
+                        value,
+                        ProcessModifyTask.REMOVE
+                ));
+            }
+        });
+
+        //Update processes map
+        processEntries.clear();
+        processEntries = processEntriesUpdated;
+        processTasksList.sort(ProcessModifyTask::compareTo);
+
+        return processTasksList;
     }
 
-    private ProcessEntry parseProcessOut(BufferedReader processReader) throws IOException {
-        while (processReader.ready()) {
-            String line = processReader.readLine();
-            String[] params = line.split(" ");
+    private UtilTask parseTask(BufferedReader reader) throws IOException {
+        String line;
 
+        while ((line = reader.readLine()) != null) {
 
         }
 
-        return null;
-    }
-
-    private ModuleEntry parseModuleOut(BufferedReader moduleReader) {
         return null;
     }
 }
