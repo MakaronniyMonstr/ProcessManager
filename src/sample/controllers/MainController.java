@@ -1,5 +1,8 @@
 package sample.controllers;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -16,7 +19,6 @@ public class MainController {
     private TableColumn<ProcessEntry, String> firstColumn;
     @FXML
     private TableColumn<ProcessEntry, String> thirdColumn;
-
 
     @FXML
     private Label parentIDLabel;
@@ -120,5 +122,17 @@ public class MainController {
 
             alert.showAndWait();
         }
+    }
+
+    @FXML
+    private void  handleCloseButton()
+    {
+        mainApp.closeApplication();
+    }
+
+    @FXML
+    private void  handleHideButton()
+    {
+        mainApp.hideApplication();
     }
 }

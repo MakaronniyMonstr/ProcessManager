@@ -10,12 +10,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" styleClass="background" stylesheets="@LightTheme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.MainController">
    <children>
-      <SplitPane dividerPositions="0.5768518518518518" layoutX="194.0" layoutY="286.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+      <SplitPane dividerPositions="0.5768518518518518" layoutX="194.0" layoutY="34.0" prefHeight="666.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="34.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
@@ -32,7 +33,7 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background" stylesheets="@LightTheme.css">
                <children>
-                  <Label alignment="CENTER" layoutX="-14.0" prefHeight="80.0" prefWidth="356.0" text="Process Information" textAlignment="CENTER" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="-14.0" AnchorPane.topAnchor="0.0">
+                  <Label alignment="CENTER" layoutX="6.0" prefHeight="65.0" prefWidth="462.0" text="Process Information" textAlignment="CENTER" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="0.0">
                      <font>
                         <Font size="11.0" />
                      </font>
@@ -97,5 +98,15 @@
             </AnchorPane>
         </items>
       </SplitPane>
+      <HBox layoutX="291.0" layoutY="260.0" spacing="5.0" stylesheets="@LightThemeButton.css" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button graphicTextGap="8.0" layoutX="197.1875" layoutY="241.0" mnemonicParsing="false" onAction="#handleHideButton" prefHeight="35.0" prefWidth="75.0" stylesheets="@LightThemeButton.css" text="—">
+               <font>
+                  <Font size="39.0" />
+               </font>
+            </Button>
+            <Button cancelButton="true" layoutX="249.375" layoutY="241.0" mnemonicParsing="false" onAction="#handleCloseButton" prefHeight="35.0" prefWidth="75.0" text="X" />
+         </children>
+      </HBox>
    </children>
 </AnchorPane>
