@@ -6,6 +6,10 @@
     -fx-background-color: linear-gradient(to top, #f7f7f7, white);
 }
 
+.background-transparent {
+    -fx-background-color: transparent;
+ }
+
 .background-white {
     -fx-background-color: #ffffff;
  }

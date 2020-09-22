@@ -1,7 +1,9 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -28,6 +30,8 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
     private Stage primaryStage;
     private BorderPane rootLayout;
     private ObservableList<ProcessEntry> processEntryList = FXCollections.observableArrayList();
+    private double xOffset;
+    private double yOffset;
 
     public Main()
     {
@@ -41,22 +45,14 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Process Manager");
         this.primaryStage.getIcons().add(new Image("sample/resources/main_icon.png"));
+        this.primaryStage.initStyle(StageStyle.UNDECORATED);
 
         initRootLayout();
         showProcessOverview();
-
-        this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                loader.destroy();
-            }
-        });
     }
 
     public void initRootLayout()
     {
-        //primaryStage.setScene(new Scene(root, 1100, 700));
-
         try {
             // Загружаем корневой макет из fxml файла.
             FXMLLoader loader = new FXMLLoader();
@@ -65,6 +61,22 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
 
             // Отображаем сцену, содержащую корневой макет.
             Scene scene = new Scene(rootLayout, 1100, 700);
+
+            scene.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = primaryStage.getX() - event.getScreenX();
+                    yOffset = primaryStage.getY() - event.getScreenY();
+                }
+            });
+            scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    primaryStage.setX(event.getScreenX() + xOffset);
+                    primaryStage.setY(event.getScreenY() + yOffset);
+                }
+            });
+
             primaryStage.setScene(scene);
             primaryStage.show();
 
@@ -77,7 +89,7 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
         try {
             // Загружаем сведения об адресатах.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("resources/sample.fxml"));
+            loader.setLocation(Main.class.getResource("resources/main_layout.fxml"));
             AnchorPane processOverview = (AnchorPane) loader.load();
 
             // Помещаем сведения об адресатах в центр корневого макета.
@@ -121,6 +133,19 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
             e.printStackTrace();
             return false;
         }
+    }
+
+    public void  closeApplication()
+    {
+        //primaryStage.close();
+        loader.destroy();
+        Platform.exit();
+        System.exit(0);
+    }
+
+    public void hideApplication()
+    {
+        primaryStage.setIconified(true);
     }
 
     public Stage getPrimaryStage() {
