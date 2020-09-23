@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.application.Platform;
+import javafx.beans.Observable;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -13,27 +14,29 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 import sample.controllers.DialogController;
 import sample.controllers.MainController;
 import sample.utils.processloader.ProcessEntry;
 import sample.utils.processloader.ProcessInfoLoader;
-import sample.utils.processloader.ProcessModifyTask;
+import sample.utils.processloader.PropertyProcessEntry;
 
 import java.io.IOException;
 import java.util.List;
 
 public class Main extends Application implements ProcessInfoLoader.OnProcessesInfoUpdatedListener {
 
+    ProcessInfoLoader loader;
     private Stage primaryStage;
     private AnchorPane rootLayout;
-    public ProcessInfoLoader loader;
-    private ObservableList<ProcessEntry> processEntryList = FXCollections.observableArrayList();
+    private ObservableList<ProcessEntry> processEntryList;
     private double xOffset;
     private double yOffset;
 
     public Main()
     {
+        processEntryList = FXCollections.observableArrayList();
+
         this.loader = ProcessInfoLoader.getInstance();
         this.loader.setOnProcessesUpdatedListener(this);
         this.loader.runService();
@@ -48,13 +51,6 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
         this.primaryStage.initStyle(StageStyle.UNDECORATED);
 
         initRootLayout();
-
-        this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                loader.destroy();
-            }
-        });
     }
 
     public void initRootLayout()
@@ -162,7 +158,7 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
 
     @Override
     public void onProcessesInfoLoaded(List<ProcessEntry> processesList) {
-        if (processesList.size() > 0) {
+        if (processEntryList.size() > 0) {
             for (int i = 0; i < processesList.size(); i++) {
                 if (i >= processEntryList.size()) {
                     processEntryList.add(processesList.get(i));

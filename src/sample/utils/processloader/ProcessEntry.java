@@ -64,7 +64,7 @@ public class ProcessEntry implements Comparable<ProcessEntry> {
     }
 
     public ProcessEntry(LinkedList<String> params) {
-        this.processName = params.poll();
+        this.processName = params.poll() + System.currentTimeMillis();
         this.processID = Integer.parseInt(params.poll());
         this.exePath = params.poll();
         this.parentProcessID = Integer.parseInt(params.poll());
@@ -198,61 +198,6 @@ public class ProcessEntry implements Comparable<ProcessEntry> {
 
     public List<ModuleEntry> getModuleEntries() {
         return moduleEntries;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProcessEntry that = (ProcessEntry) o;
-
-        return processName.equals(that.processName) &&
-                processID == that.processID &&
-                exePath.equals(that.exePath) &&
-                parentProcessID == that.parentProcessID &&
-                ownerName.equals(that.ownerName) &&
-                ownerDomain.equals(that.ownerDomain) &&
-                SID.equals(that.SID) &&
-                processType.equals(that.processType) &&
-                runtime.equals(that.runtime) &&
-                spaceLayout.equals(that.spaceLayout) &&
-                basePriority == that.basePriority &&
-                countThreads == that.countThreads;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(
-                processName,
-                processID,
-                exePath,
-                parentProcessID,
-                ownerName,
-                ownerDomain,
-                SID,
-                processType,
-                runtime,
-                spaceLayout,
-                basePriority,
-                countThreads);
-    }
-
-    public boolean isUpdated(ProcessEntry processEntry) {
-        if (processEntry == null)
-            return false;
-
-        return processName.equals(processEntry.processName) &&
-                processID == processEntry.processID &&
-                exePath.equals(processEntry.exePath) &&
-                parentProcessID == processEntry.parentProcessID &&
-                ownerName.equals(processEntry.ownerName) &&
-                ownerDomain.equals(processEntry.ownerDomain) &&
-                SID.equals(processEntry.SID) &&
-                processType.equals(processEntry.processType) &&
-                runtime.equals(processEntry.runtime) &&
-                spaceLayout.equals(processEntry.spaceLayout) &&
-                (basePriority != processEntry.basePriority ||
-                countThreads != processEntry.countThreads);
     }
 
     @Override
