@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class ProcessEntry {
+public class ProcessEntry implements Comparable<ProcessEntry> {
 
     private String processName;
     private int processID;
@@ -253,5 +253,10 @@ public class ProcessEntry {
                 spaceLayout.equals(processEntry.spaceLayout) &&
                 (basePriority != processEntry.basePriority ||
                 countThreads != processEntry.countThreads);
+    }
+
+    @Override
+    public int compareTo(ProcessEntry o) {
+        return Integer.compare(this.processID, o.getProcessID());
     }
 }

@@ -134,6 +134,8 @@ public class ProcessInfoLoader {
         LinkedList<String> params = new LinkedList<>();
         String line;
 
+        processEntries.clear();
+
         while ((line = reader.readLine()) != null) {
 
             if (!line.isEmpty()) {
@@ -151,6 +153,8 @@ public class ProcessInfoLoader {
                 loader.processEntries.add(process);
             }
         }
+
+        loader.processEntries.sort(ProcessEntry::compareTo);
 
         return loader.processEntries;
     }
