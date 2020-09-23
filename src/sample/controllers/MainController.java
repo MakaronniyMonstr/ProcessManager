@@ -46,17 +46,13 @@ public class MainController {
     private Label aclLabel;
     @FXML
     private Label fileOwnerLabel;
-    //@FXML
-    //private Image imageIcon;
 
     // Ссылка на главное приложение.
     private Main mainApp;
 
     private boolean maxSize = false;
 
-    public MainController() {
-        //imageIcon = new Image("sample/resources/main_icon.png");
-    }
+    public MainController() { }
 
     @FXML
     private void initialize() {
