@@ -100,15 +100,17 @@
             </AnchorPane>
         </items>
       </SplitPane>
-      <HBox layoutX="291.0" layoutY="260.0" spacing="5.0" stylesheets="@LightThemeButton.css" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox layoutX="291.0" layoutY="260.0" prefHeight="35.0" prefWidth="234.0" spacing="5.0" stylesheets="@LightThemeButton.css" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button graphicTextGap="8.0" layoutX="197.1875" layoutY="241.0" mnemonicParsing="false" onAction="#handleHideButton" prefHeight="35.0" prefWidth="81.0" text="—">
+            <Button graphicTextGap="8.0" layoutX="197.1875" layoutY="241.0" mnemonicParsing="false" onAction="#handleHideButton" prefHeight="35.0" prefWidth="75.0" text="—">
                <font>
                   <Font size="39.0" />
                </font>
             </Button>
+            <Button mnemonicParsing="false" onAction="#handleMinimizeButton" prefHeight="35.0" prefWidth="75.0" text="☐" />
             <Button cancelButton="true" layoutX="249.375" layoutY="241.0" mnemonicParsing="false" onAction="#handleCloseButton" prefHeight="35.0" prefWidth="75.0" text="X" />
          </children>
       </HBox>
+      <Label layoutX="14.0" layoutY="14.0" prefHeight="35.0" prefWidth="147.0" stylesheets="@LightTheme.css" text="Process Manager" textAlignment="CENTER" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>

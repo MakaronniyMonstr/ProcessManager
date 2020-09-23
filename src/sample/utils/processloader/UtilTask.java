@@ -18,18 +18,18 @@ public class UtilTask {
     public static final int SET_FILE_INTEGRITY_LEVEL    = 0xB;
 
     private static String stringCommands[] = {
-            "-pl",
-            "-ml",
-            "-pip",
-            "-pis",
-            "-ppp",
-            "-pps",
-            "-fap",
-            "-fas",
-            "-fop",
-            "-fos",
-            "-fip",
-            "-fis"
+            "-pl",//printProcessList
+            "-ml",//printModuleList
+            "-pip",//get process inegr level
+            "-pis",//set process inegr level
+            "-ppp",//get process privill
+            "-pps",//Set process privileges
+            "-fap",//printFileAcl
+            "-fas",//setFileAcl
+            "-fop",//printFileOwner
+            "-fos",//setFileOwner
+            "-fip",//printFileIntegrityLevel
+            "-fis"//setFileIntegrityLevel
     };
 
     private int command;

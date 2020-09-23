@@ -49,6 +49,8 @@ public class MainController {
     // Ссылка на главное приложение.
     private Main mainApp;
 
+    private boolean maxSize = false;
+
     public MainController() {
     }
 
@@ -132,6 +134,16 @@ public class MainController {
     private void  handleCloseButton()
     {
         mainApp.closeApplication();
+    }
+
+    @FXML
+    private void  handleMinimizeButton()
+    {
+        if (maxSize)
+            mainApp.minimizeApplication();
+        else mainApp.maximizeApplication();
+
+        maxSize = !maxSize;
     }
 
     @FXML
