@@ -49,6 +49,8 @@ public class MainController {
     // Ссылка на главное приложение.
     private Main mainApp;
 
+    private boolean maxSize = false;
+
     public MainController() {
     }
 
@@ -82,7 +84,7 @@ public class MainController {
             runEnvLabel.setText(processEntry.getRuntime());
             depLabel.setText(processEntry.getSpaceLayout());
             sidLabel.setText(processEntry.getSID());
-            intLevelLabel.setText("no");
+            intLevelLabel.setText("no");//getIntLev
             privilegesLabel.setText("no");
             aclLabel.setText("no");
             fileOwnerLabel.setText(processEntry.getOwnerName());
@@ -129,6 +131,16 @@ public class MainController {
     private void  handleCloseButton()
     {
         mainApp.closeApplication();
+    }
+
+    @FXML
+    private void  handleMinimizeButton()
+    {
+        if (maxSize)
+            mainApp.minimizeApplication();
+        else mainApp.maximizeApplication();
+
+        maxSize = !maxSize;
     }
 
     @FXML

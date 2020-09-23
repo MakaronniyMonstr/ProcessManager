@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class ProcessInfoLoader {
+
     private final String EXECUTABLE_NAME = "procapi.exe";
     private final int SERVICE_PERIOD_MS = 1500;
 

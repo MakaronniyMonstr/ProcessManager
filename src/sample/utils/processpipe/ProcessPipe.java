@@ -16,11 +16,11 @@ public class ProcessPipe {
         this.process = Runtime.getRuntime().exec(exePath + " " + arg);
     }
 
-    public BufferedReader getReader() {
+    public BufferedReader getReader() throws UnsupportedEncodingException {
         assert (process != null);
 
         reader = new BufferedReader(
-                new InputStreamReader(process.getInputStream())
+                new InputStreamReader(process.getInputStream(), "UTF-8")
         );
 
         return reader;

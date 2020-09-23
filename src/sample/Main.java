@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -27,7 +28,7 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
 
     ProcessInfoLoader loader;
     private Stage primaryStage;
-    private BorderPane rootLayout;
+    private AnchorPane rootLayout;
     private ObservableList<ProcessEntry> processEntryList = FXCollections.observableArrayList();
     private double xOffset;
     private double yOffset;
@@ -47,7 +48,6 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
         this.primaryStage.initStyle(StageStyle.UNDECORATED);
 
         initRootLayout();
-        showProcessOverview();
     }
 
     public void initRootLayout()
@@ -55,8 +55,8 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
         try {
             // Загружаем корневой макет из fxml файла.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("resources/root_layout.fxml"));
-            rootLayout = (BorderPane) loader.load();
+            loader.setLocation(Main.class.getResource("resources/main_layout.fxml"));
+            rootLayout = (AnchorPane) loader.load();
 
             // Отображаем сцену, содержащую корневой макет.
             Scene scene = new Scene(rootLayout, 1100, 700);
@@ -80,22 +80,6 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
             primaryStage.setScene(scene);
             primaryStage.show();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void showProcessOverview() {
-        try {
-            // Загружаем сведения об адресатах.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("resources/main_layout.fxml"));
-            AnchorPane processOverview = (AnchorPane) loader.load();
-
-            // Помещаем сведения об адресатах в центр корневого макета.
-            rootLayout.setCenter(processOverview);
-
-            // Даём контроллеру доступ к главному приложению.
             MainController controller = loader.getController();
             controller.setMainApp(this);
 
@@ -142,6 +126,16 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
         System.exit(0);
     }
 
+    public void minimizeApplication()
+    {
+        primaryStage.setMaximized(false);
+    }
+
+    public void maximizeApplication()
+    {
+        primaryStage.setMaximized(true);
+    }
+
     public void hideApplication()
     {
         primaryStage.setIconified(true);
@@ -169,6 +163,5 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
             else
                 processEntryList.remove(process);
         }
-
     }
 }
