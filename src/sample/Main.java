@@ -161,7 +161,21 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
 
     @Override
     public void onProcessesInfoLoaded(List<ProcessEntry> processesList) {
-        processEntryList.clear();
-        processEntryList.addAll(processesList);
+        if (processesList.size() > 0) {
+            for (int i = 0; i < processesList.size(); i++) {
+                if (i >= processEntryList.size()) {
+                    processEntryList.add(processesList.get(i));
+                } else {
+                    processEntryList.get(i).update(processesList.get(i));
+                }
+            }
+
+            if (processesList.size() < processEntryList.size()) {
+                processEntryList.remove(processesList.size());
+            }
+        }
+        else {
+            processEntryList.addAll(processesList);
+        }
     }
 }
