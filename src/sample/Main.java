@@ -25,7 +25,7 @@ import java.util.List;
 
 public class Main extends Application implements ProcessInfoLoader.OnProcessesInfoUpdatedListener {
 
-    ProcessInfoLoader loader;
+    public ProcessInfoLoader loader;
     private Stage primaryStage;
     private AnchorPane rootLayout;
     private ObservableList<ProcessEntry> processEntryList = FXCollections.observableArrayList();

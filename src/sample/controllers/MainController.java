@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
 import sample.Main;
 import sample.utils.processloader.ProcessEntry;
 
@@ -45,6 +46,8 @@ public class MainController {
     private Label aclLabel;
     @FXML
     private Label fileOwnerLabel;
+    //@FXML
+    //private Image imageIcon;
 
     // Ссылка на главное приложение.
     private Main mainApp;
@@ -52,6 +55,7 @@ public class MainController {
     private boolean maxSize = false;
 
     public MainController() {
+        //imageIcon = new Image("sample/resources/main_icon.png");
     }
 
     @FXML
@@ -78,6 +82,9 @@ public class MainController {
     private void showProcessDetails(ProcessEntry processEntry) {
         try {
             if (processEntry != null) {
+
+                //mainApp.loader.stopService();
+
                 // Заполняем метки информацией из объекта person.
                 parentIDLabel.setText(Integer.toString(processEntry.getParentProcessID()));
                 parentNameLabel.setText(processEntry.getOwnerDomain());
@@ -90,6 +97,8 @@ public class MainController {
                 privilegesLabel.setText("no");
                 aclLabel.setText("no");
                 fileOwnerLabel.setText(processEntry.getOwnerName());
+
+                //mainApp.loader.runService();
 
             } else {
 
