@@ -1,6 +1,7 @@
 package sample.utils.processpipe;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class ProcessPipe {
     private Process process;
@@ -16,11 +17,11 @@ public class ProcessPipe {
         this.process = Runtime.getRuntime().exec(exePath + " " + arg);
     }
 
-    public BufferedReader getReader() {
+    public BufferedReader getReader() throws UnsupportedEncodingException {
         assert (process != null);
 
         reader = new BufferedReader(
-                new InputStreamReader(process.getInputStream())
+                new InputStreamReader(process.getInputStream(), "windows-1251")
         );
 
         return reader;

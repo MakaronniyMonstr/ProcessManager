@@ -132,25 +132,33 @@ public class ProcessInfoLoader {
 
                 process = new ProcessEntry(params);
                 params.clear();
+                if (!process.getProcessName().equals("conhost.exe"))
+                    continue;
 
                 processEntriesUpdated.add(process);
                 //Process is already in the list
                 if (!loader.processEntries.contains(process)) {
-                    if (!loader.processEntries.updated(process)) {
+                    if (loader.processEntries.updated(process)) {
+                        processTasksList.add(new ProcessModifyTask(
+                                process,
+                                ProcessModifyTask.UPDATE
+                        ));
+                    } else {
                         processTasksList.add(new ProcessModifyTask(
                                 process,
                                 ProcessModifyTask.ADD
                         ));
-                    } else {
-
                     }
                 }
             }
         }
 
         //Compare new and old processes maps to find difference and remove processes
-        processEntries.removeAll(processEntriesUpdated);
-        processEntries.forEach(processEntry -> {
+        loader.processEntries.removeIf(processEntry ->
+            processEntriesUpdated.updated(processEntry) ||
+                    processEntriesUpdated.contains(processEntry)
+        );
+        loader.processEntries.forEach(processEntry -> {
             processTasksList.add(
                     new ProcessModifyTask(processEntry,
                     ProcessModifyTask.REMOVE)
