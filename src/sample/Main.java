@@ -18,7 +18,6 @@ import sample.controllers.DialogController;
 import sample.controllers.MainController;
 import sample.utils.processloader.ProcessEntry;
 import sample.utils.processloader.ProcessInfoLoader;
-import sample.utils.processloader.ProcessModifyTask;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,7 +34,8 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
     public Main()
     {
         this.loader = ProcessInfoLoader.getInstance();
-        this.loader.getInstance().setOnProcessesUpdatedListener(this);
+        this.loader.setOnProcessesUpdatedListener(this);
+        this.loader.runService();
     }
 
     @Override

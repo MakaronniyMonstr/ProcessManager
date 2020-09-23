@@ -11,7 +11,7 @@ import java.util.concurrent.*;
 
 public class ProcessInfoLoader {
     private final String EXECUTABLE_NAME = "procapi.exe";
-    private final int SERVICE_PERIOD_MS = 1500;
+    private final int SERVICE_PERIOD_MS = 2000;
 
     private String execPath;
     //Singleton
@@ -60,10 +60,15 @@ public class ProcessInfoLoader {
     //Use this one to update your UI.
     public void setOnProcessesUpdatedListener(OnProcessesInfoUpdatedListener processesListener) {
         loader.processesListener = processesListener;
+    }
 
+    public void runService() {
         //Service is already started up
         if (loader.processesUpdateService != null &&
                 !loader.processesUpdateService.isShutdown())
+            return;
+
+        if (loader.processesListener == null)
             return;
 
         loader.processesUpdateService = Executors.newSingleThreadScheduledExecutor();
@@ -75,7 +80,7 @@ public class ProcessInfoLoader {
                         pipe = new ProcessPipe(
                                 execPath,
                                 UtilTask.commandToString(UtilTask.GET_PROCESSES_LIST)
-                                );
+                        );
                         loader.processesListener
                                 .onProcessesInfoLoaded(
                                         parseProcessOutput(pipe.getReader())
@@ -88,6 +93,13 @@ public class ProcessInfoLoader {
                     }
                 }
                 , 0, SERVICE_PERIOD_MS, TimeUnit.MILLISECONDS);
+    }
+
+    public void stopService() {
+        loader.utilExecuteService.shutdown();
+        try {
+            loader.utilExecuteService.awaitTermination(500, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) { e.printStackTrace(); }
     }
 
     //Run new task
