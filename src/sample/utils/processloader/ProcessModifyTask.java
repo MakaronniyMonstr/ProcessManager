@@ -3,6 +3,7 @@ package sample.utils.processloader;
 public class ProcessModifyTask implements Comparable<ProcessModifyTask> {
     public static final int ADD    = 0x0;
     public static final int REMOVE = 0x1;
+    public static final int UPDATE = 0x2;
 
     private int type;
     private ProcessEntry processEntry;

@@ -1,6 +1,7 @@
 package sample.utils.processpipe;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class ProcessPipe {
     private Process process;
@@ -20,7 +21,7 @@ public class ProcessPipe {
         assert (process != null);
 
         reader = new BufferedReader(
-                new InputStreamReader(process.getInputStream(), "UTF-8")
+                new InputStreamReader(process.getInputStream(), "windows-1251")
         );
 
         return reader;
@@ -45,7 +46,9 @@ public class ProcessPipe {
         assert process != null;
 
         process.destroyForcibly();
-        writer.close();
-        reader.close();
+        if (writer != null)
+            writer.close();
+        if (reader != null)
+            reader.close();
     }
 }

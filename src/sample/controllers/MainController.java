@@ -62,9 +62,10 @@ public class MainController {
 
         showProcessDetails(null);
 
-        processTable.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> showProcessDetails(newValue));
-
+        try {
+            processTable.getSelectionModel().selectedItemProperty().addListener(
+                    (observable, oldValue, newValue) -> showProcessDetails(newValue));
+        }catch (Exception e) { e.printStackTrace(); }
     }
 
     public void setMainApp(Main mainApp) {
@@ -75,35 +76,37 @@ public class MainController {
     }
 
     private void showProcessDetails(ProcessEntry processEntry) {
-        if (processEntry != null) {
-            // Заполняем метки информацией из объекта person.
-            parentIDLabel.setText(Integer.toString(processEntry.getParentProcessID()));
-            parentNameLabel.setText(processEntry.getOwnerDomain());
-            pidLabel.setText(Integer.toString(processEntry.getProcessID()));
-            typeLabel.setText(processEntry.getProcessType());
-            runEnvLabel.setText(processEntry.getRuntime());
-            depLabel.setText(processEntry.getSpaceLayout());
-            sidLabel.setText(processEntry.getSID());
-            intLevelLabel.setText("no");//getIntLev
-            privilegesLabel.setText("no");
-            aclLabel.setText("no");
-            fileOwnerLabel.setText(processEntry.getOwnerName());
+        try {
+            if (processEntry != null) {
+                // Заполняем метки информацией из объекта person.
+                parentIDLabel.setText(Integer.toString(processEntry.getParentProcessID()));
+                parentNameLabel.setText(processEntry.getOwnerDomain());
+                pidLabel.setText(Integer.toString(processEntry.getProcessID()));
+                typeLabel.setText(processEntry.getProcessType());
+                runEnvLabel.setText(processEntry.getRuntime());
+                depLabel.setText(processEntry.getSpaceLayout());
+                sidLabel.setText(processEntry.getSID());
+                intLevelLabel.setText("no");
+                privilegesLabel.setText("no");
+                aclLabel.setText("no");
+                fileOwnerLabel.setText(processEntry.getOwnerName());
 
-        } else {
+            } else {
 
-            parentIDLabel.setText("");
-            parentNameLabel.setText("");
-            pidLabel.setText("");
-            typeLabel.setText("");
-            runEnvLabel.setText("");
-            depLabel.setText("");
-            dllLibsLabel.setText("");
-            sidLabel.setText("");
-            intLevelLabel.setText("");
-            privilegesLabel.setText("");
-            aclLabel.setText("");
-            fileOwnerLabel.setText("");
-        }
+                parentIDLabel.setText("");
+                parentNameLabel.setText("");
+                pidLabel.setText("");
+                typeLabel.setText("");
+                runEnvLabel.setText("");
+                depLabel.setText("");
+                dllLibsLabel.setText("");
+                sidLabel.setText("");
+                intLevelLabel.setText("");
+                privilegesLabel.setText("");
+                aclLabel.setText("");
+                fileOwnerLabel.setText("");
+            }
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     @FXML

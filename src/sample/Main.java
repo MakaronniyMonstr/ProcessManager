@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -36,7 +35,8 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
     public Main()
     {
         this.loader = ProcessInfoLoader.getInstance();
-        this.loader.getInstance().setOnProcessesUpdatedListener(this);
+        this.loader.setOnProcessesUpdatedListener(this);
+        this.loader.runService();
     }
 
     @Override
@@ -154,14 +154,8 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
     }
 
     @Override
-    public void onProcessesInfoLoaded(List<ProcessModifyTask> processModifyTasks) {
-
-        for (ProcessModifyTask process : processModifyTasks)
-        {
-            if (process.getType() == process.ADD)
-                processEntryList.add(process.getProcessEntry());
-            else
-                processEntryList.remove(process);
-        }
+    public void onProcessesInfoLoaded(List<ProcessEntry> processesList) {
+        processEntryList.clear();
+        processEntryList.addAll(processesList);
     }
 }
