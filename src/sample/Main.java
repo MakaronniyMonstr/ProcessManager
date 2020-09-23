@@ -160,15 +160,8 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
     }
 
     @Override
-    public void onProcessesInfoLoaded(List<ProcessModifyTask> processModifyTasks) {
-
-        for (ProcessModifyTask process : processModifyTasks)
-        {
-            if (process.getType() == process.ADD)
-                processEntryList.add(process.getProcessEntry());
-            else
-                processEntryList.remove(process);
-        }
-
+    public void onProcessesInfoLoaded(List<ProcessEntry> processesList) {
+        processEntryList.clear();
+        processEntryList.addAll(processesList);
     }
 }

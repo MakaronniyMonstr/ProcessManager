@@ -27,7 +27,7 @@ public class ProcessInfoLoader {
 
     //Updates your UI.
     public interface OnProcessesInfoUpdatedListener {
-        void onProcessesInfoLoaded(List<ProcessModifyTask> processModifyTasks);
+        void onProcessesInfoLoaded(List<ProcessEntry> processModifyTasks);
     }
 
     //Updates your UI.
@@ -81,6 +81,8 @@ public class ProcessInfoLoader {
                                         parseProcessOutput(pipe.getReader())
                                 );
 
+                        pipe.destroy();
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -102,6 +104,8 @@ public class ProcessInfoLoader {
                         loader.utilListener
                                 .onTaskCompleted(parseTask(pipe.getReader()));
 
+                        pipe.destroy();
+
                     } catch (IOException e) { e.printStackTrace(); }
                 }
         );
@@ -113,9 +117,7 @@ public class ProcessInfoLoader {
     }
 
     //Parse console output
-    private List<ProcessModifyTask> parseProcessOutput(BufferedReader reader) throws IOException {
-        List<ProcessModifyTask> processTasksList = new ArrayList<>();
-        UpdatingArrayList processEntriesUpdated = new UpdatingArrayList();
+    private List<ProcessEntry> parseProcessOutput(BufferedReader reader) throws IOException {
         LinkedList<String> params = new LinkedList<>();
         String line;
 
@@ -133,45 +135,11 @@ public class ProcessInfoLoader {
                 process = new ProcessEntry(params);
                 params.clear();
 
-                processEntriesUpdated.add(process);
-                //Process is already in the list
-                if (!loader.processEntries.contains(process)) {
-                    if (loader.processEntries.updated(process)) {
-                        processTasksList.add(new ProcessModifyTask(
-                                process,
-                                ProcessModifyTask.UPDATE
-                        ));
-                    } else {
-                        processTasksList.add(new ProcessModifyTask(
-                                process,
-                                ProcessModifyTask.ADD
-                        ));
-                    }
-                }
+                loader.processEntries.add(process);
             }
         }
 
-        //Compare new and old processes maps to find difference and remove processes
-        loader.processEntries.removeIf(processEntry ->
-            processEntriesUpdated.updated(processEntry) ||
-                    processEntriesUpdated.contains(processEntry)
-        );
-        loader.processEntries.forEach(processEntry -> {
-            processTasksList.add(
-                    new ProcessModifyTask(processEntry,
-                    ProcessModifyTask.REMOVE)
-            );
-        });
-
-        //Update processes map
-        loader.processEntries.clear();
-        loader.processEntries.addAll(processEntriesUpdated);
-        processEntriesUpdated.clear();
-
-        processTasksList.sort(ProcessModifyTask::compareTo);
-        reader.close();
-
-        return processTasksList;
+        return loader.processEntries;
     }
 
     private UtilTask parseTask(BufferedReader reader) throws IOException {

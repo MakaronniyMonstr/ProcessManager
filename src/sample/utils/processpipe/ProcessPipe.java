@@ -46,7 +46,9 @@ public class ProcessPipe {
         assert process != null;
 
         process.destroyForcibly();
-        writer.close();
-        reader.close();
+        if (writer != null)
+            writer.close();
+        if (reader != null)
+            reader.close();
     }
 }
