@@ -18,6 +18,12 @@
      -fx-background-color: #afafaf;
   }
 
+
+.pane{
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+}
+
 .label {
     -fx-font-size: 13pt;
     -fx-font-family: "Segoe UI Light";

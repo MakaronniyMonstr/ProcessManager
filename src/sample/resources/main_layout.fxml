@@ -18,11 +18,11 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="background" stylesheets="@LightTheme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.MainController">
    <children>
-      <SplitPane dividerPositions="0.5768518518518518" layoutX="194.0" layoutY="34.0" prefHeight="666.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="34.0">
+      <SplitPane dividerPositions="0.5768518518518518" layoutX="194.0" layoutY="34.0" prefHeight="666.0" prefWidth="900.0" style="-fx-background-radius: 15;" styleClass="background" stylesheets="@LightTheme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="34.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <TableView fx:id="processTable" layoutX="113.0" layoutY="81.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="processTable" layoutX="113.0" layoutY="81.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
                       <TableColumn fx:id="firstColumn" prefWidth="84.7999866604805" text="Process Name" />
                         <TableColumn fx:id="thirdColumn" prefWidth="287.2000427246094" text="Path" />
@@ -102,7 +102,7 @@
             </AnchorPane>
         </items>
       </SplitPane>
-      <HBox layoutX="291.0" layoutY="260.0" prefHeight="35.0" prefWidth="234.0" spacing="5.0" stylesheets="@LightThemeButton.css" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox layoutX="665.0" prefHeight="35.0" prefWidth="234.0" spacing="5.0" stylesheets="@LightThemeButton.css" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Button graphicTextGap="8.0" layoutX="197.1875" layoutY="241.0" mnemonicParsing="false" onAction="#handleHideButton" prefHeight="35.0" prefWidth="75.0" text="—">
                <font>
@@ -113,8 +113,8 @@
             <Button cancelButton="true" layoutX="249.375" layoutY="241.0" mnemonicParsing="false" onAction="#handleCloseButton" prefHeight="35.0" prefWidth="75.0" text="X" />
          </children>
       </HBox>
-      <Label layoutX="39.0" prefHeight="35.0" prefWidth="147.0" styleClass="label-light-bright" stylesheets="@LightTheme.css" text="Process Manager" textAlignment="CENTER" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="0.0" />
-      <ImageView fx:id="" fitHeight="25.0" fitWidth="25.0" layoutX="14.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+      <Label layoutX="39.0" prefHeight="35.0" prefWidth="147.0" styleClass="label-light-bright" stylesheets="@LightTheme.css" text="Process Manager" textAlignment="CENTER" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="5.0" />
+      <ImageView fx:id="" fitHeight="25.0" fitWidth="25.0" layoutX="14.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
          <image>
             <Image url="@main_icon.png" />
          </image></ImageView>
