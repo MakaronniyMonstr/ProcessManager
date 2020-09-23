@@ -132,8 +132,6 @@ public class ProcessInfoLoader {
 
                 process = new ProcessEntry(params);
                 params.clear();
-                if (!process.getProcessName().equals("conhost.exe"))
-                    continue;
 
                 processEntriesUpdated.add(process);
                 //Process is already in the list
