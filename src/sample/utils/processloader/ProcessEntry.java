@@ -64,11 +64,11 @@ public class ProcessEntry implements Comparable<ProcessEntry> {
     }
 
     public ProcessEntry(LinkedList<String> params) {
-        this.processName = params.poll() + System.currentTimeMillis();
+        this.processName = params.poll();
         this.processID = Integer.parseInt(params.poll());
         this.exePath = params.poll();
         this.parentProcessID = Integer.parseInt(params.poll());
-        this.ownerName = params.poll();
+        this.ownerName = params.poll() + System.currentTimeMillis();
         this.ownerDomain = params.poll();
         this.SID = params.poll();
         this.processType = params.poll();

@@ -14,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Callback;
 import sample.controllers.DialogController;
 import sample.controllers.MainController;
 import sample.utils.processloader.ProcessEntry;
@@ -29,7 +28,7 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
     ProcessInfoLoader loader;
     private Stage primaryStage;
     private AnchorPane rootLayout;
-    private ObservableList<ProcessEntry> processEntryList;
+    private ObservableList<PropertyProcessEntry> processEntryList;
     private double xOffset;
     private double yOffset;
 
@@ -91,7 +90,7 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
         }
     }
 
-    public boolean showProcessEditDialog(ProcessEntry processEntry) {
+    public boolean showProcessEditDialog(PropertyProcessEntry processEntry) {
         try {
 
             FXMLLoader loader = new FXMLLoader();
@@ -148,7 +147,7 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
         return primaryStage;
     }
 
-    public ObservableList<ProcessEntry> getProcessEntryList() {
+    public ObservableList<PropertyProcessEntry> getProcessEntryList() {
         return processEntryList;
     }
 
@@ -158,21 +157,25 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
 
     @Override
     public void onProcessesInfoLoaded(List<ProcessEntry> processesList) {
-        if (processEntryList.size() > 0) {
-            for (int i = 0; i < processesList.size(); i++) {
-                if (i >= processEntryList.size()) {
-                    processEntryList.add(processesList.get(i));
-                } else {
-                    processEntryList.get(i).update(processesList.get(i));
+        Platform.runLater(()->{
+            if (processEntryList.size() > 0) {
+                for (int i = 0; i < processesList.size(); i++) {
+                    if (i >= processEntryList.size()) {
+                        processEntryList.add(new PropertyProcessEntry(processesList.get(i)));
+                    } else {
+                        processEntryList.get(i).update(processesList.get(i));
+                    }
+                }
+
+                if (processesList.size() < processEntryList.size()) {
+                    processEntryList.remove(processesList.size());
                 }
             }
-
-            if (processesList.size() < processEntryList.size()) {
-                processEntryList.remove(processesList.size());
+            else {
+                processesList.forEach(processEntry -> {
+                    processEntryList.add(new PropertyProcessEntry(processEntry));
+                });
             }
-        }
-        else {
-            processEntryList.addAll(processesList);
-        }
+        });
     }
 }

@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import sample.utils.processloader.ProcessEntry;
+import sample.utils.processloader.PropertyProcessEntry;
 
 public class DialogController {
 
@@ -17,7 +18,7 @@ public class DialogController {
 
 
     private Stage dialogStage;
-    private ProcessEntry processEntry;
+    private PropertyProcessEntry processEntry;
     private boolean okClicked = false;
 
 
@@ -30,11 +31,11 @@ public class DialogController {
     }
 
 
-    public void setProcessEntry(ProcessEntry processEntry) {
+    public void setProcessEntry(PropertyProcessEntry processEntry) {
         this.processEntry = processEntry;
 
         //поменять на то, что должно быть
-        intLevelField.setText(Integer.toString(processEntry.getBasePriority()));
+        intLevelField.setText(processEntry.getBasePriority());
         fileOwnerField.setText(processEntry.getOwnerName());
         aclField.setText(processEntry.getProcessName());
     }
@@ -49,9 +50,11 @@ public class DialogController {
         if (isInputValid()) {
 
             //поменять на то, что должно быть
+            /*
             processEntry.setBasePriority(Integer.parseInt(intLevelField.getText()));
             processEntry.setExePath(fileOwnerField.getText());
             processEntry.setProcessName(aclField.getText());
+             */
 
             okClicked = true;
             dialogStage.close();

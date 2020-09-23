@@ -9,18 +9,18 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.image.Image;
 import sample.Main;
 import sample.utils.processloader.ProcessEntry;
+import sample.utils.processloader.PropertyProcessEntry;
 
 
 public class MainController {
     @FXML
-    private TableView<ProcessEntry> processTable;
+    private TableView<PropertyProcessEntry> processTable;
     @FXML
-    private TableColumn<ProcessEntry, String> firstColumn;
+    private TableColumn<PropertyProcessEntry, String> firstColumn;
     @FXML
-    private TableColumn<ProcessEntry, String> thirdColumn;
+    private TableColumn<PropertyProcessEntry, String> thirdColumn;
 
     @FXML
     private Label parentIDLabel;
@@ -52,20 +52,19 @@ public class MainController {
 
     private boolean maxSize = false;
 
-    public MainController() { }
+    public MainController() {
+    }
 
     @FXML
     private void initialize() {
         // Инициализация таблицы адресатов с двумя столбцами.
-        firstColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProcessName()));
-        thirdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExePath()));
+        firstColumn.setCellValueFactory(cellData -> cellData.getValue().processNameProperty());
+        thirdColumn.setCellValueFactory(cellData -> cellData.getValue().exePathProperty());
 
         showProcessDetails(null);
 
-        try {
-            processTable.getSelectionModel().selectedItemProperty().addListener(
-                    (observable, oldValue, newValue) -> showProcessDetails(newValue));
-        }catch (Exception e) { e.printStackTrace(); }
+        processTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> showProcessDetails(newValue));
     }
 
     public void setMainApp(Main mainApp) {
@@ -75,29 +74,20 @@ public class MainController {
         processTable.setItems(mainApp.getProcessEntryList());
     }
 
-    private void showProcessDetails(ProcessEntry processEntry) {
-        try {
+    private void showProcessDetails(PropertyProcessEntry processEntry) {
             if (processEntry != null) {
-
-                //mainApp.loader.stopService();
-
-                // Заполняем метки информацией из объекта person.
-                parentIDLabel.setText(Integer.toString(processEntry.getParentProcessID()));
-                parentNameLabel.setText(processEntry.getOwnerDomain());
-                pidLabel.setText(Integer.toString(processEntry.getProcessID()));
-                typeLabel.setText(processEntry.getProcessType());
-                runEnvLabel.setText(processEntry.getRuntime());
-                depLabel.setText(processEntry.getSpaceLayout());
-                sidLabel.setText(processEntry.getSID());
+                parentIDLabel.textProperty().bind(processEntry.parentProcessIDProperty());
+                pidLabel.textProperty().bind(processEntry.processIDProperty());
+                typeLabel.textProperty().bind(processEntry.processTypeProperty());
+                runEnvLabel.textProperty().bind(processEntry.runtimeProperty());
+                depLabel.textProperty().bind(processEntry.spaceLayoutProperty());
+                sidLabel.textProperty().bind(processEntry.SIDProperty());
+                fileOwnerLabel.textProperty().bind(processEntry.ownerNameProperty());
                 intLevelLabel.setText("no");
                 privilegesLabel.setText("no");
                 aclLabel.setText("no");
-                fileOwnerLabel.setText(processEntry.getOwnerName());
-
-                //mainApp.loader.runService();
-
+                parentNameLabel.setText("no");
             } else {
-
                 parentIDLabel.setText("");
                 parentNameLabel.setText("");
                 pidLabel.setText("");
@@ -111,12 +101,11 @@ public class MainController {
                 aclLabel.setText("");
                 fileOwnerLabel.setText("");
             }
-        } catch (Exception e) { e.printStackTrace(); }
     }
 
     @FXML
     private void handleEditPerson() {
-        ProcessEntry selectedProcess = processTable.getSelectionModel().getSelectedItem();
+        PropertyProcessEntry selectedProcess = processTable.getSelectionModel().getSelectedItem();
         if (selectedProcess != null) {
             boolean okClicked = mainApp.showProcessEditDialog(selectedProcess);
             if (okClicked) {

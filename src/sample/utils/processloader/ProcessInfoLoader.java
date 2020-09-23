@@ -155,7 +155,7 @@ public class ProcessInfoLoader {
 
         loader.processEntries.sort(ProcessEntry::compareTo);
 
-        return loader.processEntries;
+        return loader.processEntries.subList(0, 10);
     }
 
     private UtilTask parseTask(BufferedReader reader) throws IOException {
