@@ -56,7 +56,6 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
         firstColumn.setCellValueFactory(cellData -> cellData.getValue().processNameProperty());
         thirdColumn.setCellValueFactory(cellData -> cellData.getValue().exePathProperty());
 
-
         showProcessDetails(null);
 
         processTable.getSelectionModel().selectedItemProperty().addListener(
