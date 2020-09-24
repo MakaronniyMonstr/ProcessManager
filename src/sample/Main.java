@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -26,6 +27,8 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
 
     private Stage primaryStage;
     private AnchorPane rootLayout;
+    private int STAGE_WIDTH = 1200;
+    private int STAGE_HEIGHT = 800;
     private ObservableList<PropertyProcessEntry> processEntryList;
     private double xOffset;
     private double yOffset;
@@ -52,6 +55,8 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
         this.primaryStage.setTitle("Process Manager");
         this.primaryStage.getIcons().add(new Image("sample/resources/main_icon.png"));
         this.primaryStage.initStyle(StageStyle.UNDECORATED);
+        this.primaryStage.initStyle(StageStyle.TRANSPARENT);
+        this.primaryStage.setResizable(true);
 
         initRootLayout();
     }
@@ -65,7 +70,9 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
             rootLayout = (AnchorPane) loader.load();
 
             // Отображаем сцену, содержащую корневой макет.
-            Scene scene = new Scene(rootLayout, 1200, 800);
+            Scene scene = new Scene(rootLayout, STAGE_WIDTH, STAGE_HEIGHT);
+
+            scene.setFill(Color.TRANSPARENT);
 
             scene.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
@@ -105,9 +112,11 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Edit Process");
             dialogStage.initStyle(StageStyle.UNDECORATED);
+            dialogStage.initStyle(StageStyle.TRANSPARENT);
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
+            scene.setFill(Color.TRANSPARENT);
             dialogStage.setScene(scene);
 
             // Передаём адресата в контроллер.
