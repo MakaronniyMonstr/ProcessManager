@@ -153,7 +153,7 @@
     -fx-border-width: 1, 1;
     -fx-border-style: solid, segments(1, 1);
     -fx-background-radius: 10;
-    -fx-border-radius: 10
+    -fx-border-radius: 10;
     -fx-border-insets: 1 1 1 1, 0;
 }
 

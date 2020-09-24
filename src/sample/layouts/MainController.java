@@ -42,6 +42,8 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
     private TextField dllLibsField;
     @FXML
     private TextField privilegesField;
+    @FXML
+    private TextField aclField;
 
     // Ссылка на главное приложение.
     private Main mainApp;
@@ -86,6 +88,7 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
                 depField.textProperty().bind(processEntry.spaceLayoutProperty());
                 sidField.textProperty().bind(processEntry.SIDProperty());
                 fileOwnerField.textProperty().bind(processEntry.ownerNameProperty());
+                aclField.setText("");
 
                 UtilTask utilTask = new UtilTask(UtilTask.GET_PROCESS_INTEGRITY_LEVEL, processEntry.getProcessID());
                 ProcessInfoLoader.getInstance().runNewTask(utilTask);
@@ -107,6 +110,7 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
                 intLevelField.setText("");
                 privilegesField.setText("");
                 fileOwnerField.setText("");
+                aclField.setText("");
 
             }
     }
