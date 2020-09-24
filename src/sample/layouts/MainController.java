@@ -1,20 +1,18 @@
-package sample.controllers;
+package sample.layouts;
 
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import sample.Main;
-import sample.utils.processloader.ProcessEntry;
+import sample.utils.processloader.ProcessInfoLoader;
 import sample.utils.processloader.PropertyProcessEntry;
+import sample.utils.processloader.UtilTask;
+
+import java.io.IOException;
 
 
-public class MainController {
+public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedListener{
     @FXML
     private TableView<PropertyProcessEntry> processTable;
     @FXML
@@ -35,15 +33,13 @@ public class MainController {
     @FXML
     private Label depLabel;
     @FXML
-    private Label dllLibsLabel;
+    private TextField dllLibsField;
     @FXML
     private Label sidLabel;
     @FXML
     private Label intLevelLabel;
     @FXML
     private Label privilegesLabel;
-    @FXML
-    private Label aclLabel;
     @FXML
     private Label fileOwnerLabel;
 
@@ -52,19 +48,25 @@ public class MainController {
 
     private boolean maxSize = false;
 
-    public MainController() {
-    }
+    public MainController() { ProcessInfoLoader.getInstance().setOnUtilTaskCompletedListener(this); }
 
     @FXML
-    private void initialize() {
+    private void initialize() throws IOException {
         // Инициализация таблицы адресатов с двумя столбцами.
         firstColumn.setCellValueFactory(cellData -> cellData.getValue().processNameProperty());
         thirdColumn.setCellValueFactory(cellData -> cellData.getValue().exePathProperty());
 
+
         showProcessDetails(null);
 
         processTable.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> showProcessDetails(newValue));
+                (observable, oldValue, newValue) -> {
+                    try {
+                        showProcessDetails(newValue);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
     }
 
     public void setMainApp(Main mainApp) {
@@ -74,33 +76,54 @@ public class MainController {
         processTable.setItems(mainApp.getProcessEntryList());
     }
 
-    private void showProcessDetails(PropertyProcessEntry processEntry) {
+    private void showProcessDetails(PropertyProcessEntry processEntry) throws IOException {
             if (processEntry != null) {
+
                 parentIDLabel.textProperty().bind(processEntry.parentProcessIDProperty());
+                parentNameLabel.setText(findParentName(processEntry));//how to bind
                 pidLabel.textProperty().bind(processEntry.processIDProperty());
                 typeLabel.textProperty().bind(processEntry.processTypeProperty());
                 runEnvLabel.textProperty().bind(processEntry.runtimeProperty());
                 depLabel.textProperty().bind(processEntry.spaceLayoutProperty());
                 sidLabel.textProperty().bind(processEntry.SIDProperty());
                 fileOwnerLabel.textProperty().bind(processEntry.ownerNameProperty());
-                intLevelLabel.setText("no");
-                privilegesLabel.setText("no");
-                aclLabel.setText("no");
-                parentNameLabel.setText("no");
+
+                UtilTask utilTask = new UtilTask(UtilTask.GET_PROCESS_INTEGRITY_LEVEL, processEntry.getProcessID());
+                ProcessInfoLoader.getInstance().runNewTask(utilTask);
+                /*utilTask.setCommand(UtilTask.GET_PROCESS_PRIVILEGES);
+                ProcessInfoLoader.getInstance().runNewTask(utilTask);
+                utilTask.setCommand(UtilTask.GET_MODULES_LIST);
+                ProcessInfoLoader.getInstance().runNewTask(utilTask);*/
+                //intLevelLabel.setText("");
+                //privilegesLabel.setText("");
+
+
             } else {
+
                 parentIDLabel.setText("");
                 parentNameLabel.setText("");
                 pidLabel.setText("");
                 typeLabel.setText("");
                 runEnvLabel.setText("");
                 depLabel.setText("");
-                dllLibsLabel.setText("");
+                dllLibsField.setText("");
                 sidLabel.setText("");
                 intLevelLabel.setText("");
                 privilegesLabel.setText("");
-                aclLabel.setText("");
                 fileOwnerLabel.setText("");
+
             }
+    }
+
+    private String findParentName(PropertyProcessEntry childProcess)
+    {
+        ObservableList<PropertyProcessEntry> processList = mainApp.getProcessEntryList();
+        for (PropertyProcessEntry tmp : processList)
+        {
+            if (tmp.getProcessID().equals(childProcess.getParentProcessID()))
+                return tmp.getProcessName();
+        }
+        return "UNKNOWN";
     }
 
     @FXML
@@ -109,7 +132,11 @@ public class MainController {
         if (selectedProcess != null) {
             boolean okClicked = mainApp.showProcessEditDialog(selectedProcess);
             if (okClicked) {
-                showProcessDetails(selectedProcess);
+                try {
+                    showProcessDetails(selectedProcess);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
         } else {
@@ -144,5 +171,20 @@ public class MainController {
     private void  handleHideButton()
     {
         mainApp.hideApplication();
+    }
+
+    @Override
+    public void onTaskCompleted(UtilTask task) {
+        Platform.runLater(()->{
+
+            if (task.getCommand() == UtilTask.GET_PROCESS_INTEGRITY_LEVEL)
+                intLevelLabel.setText(task.getStringData());
+            //else if (task.getCommand() == UtilTask.GET_PROCESS_INTEGRITY_LEVEL)
+                //intLevelLabel.setText(task.getStringData());
+            //ProcessEntry = Runtime.getRuntime().exec("procapi.exe " + utilTask.getStringCommand());
+            //intLevelLabel.setText(String.valueOf(Runtime.getRuntime().exec("procapi.exe " + utilTask.getStringCommand())));
+            //privilegesLabel.setText("no");//Runtime.getRuntime().exec();
+            //aclLabel.setText("no");//Runtime.getRuntime().exec();
+        });
     }
 }

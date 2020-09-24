@@ -1,7 +1,6 @@
 package sample;
 
 import javafx.application.Platform;
-import javafx.beans.Observable;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -14,8 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import sample.controllers.DialogController;
-import sample.controllers.MainController;
+import sample.layouts.DialogController;
+import sample.layouts.MainController;
 import sample.utils.processloader.ProcessEntry;
 import sample.utils.processloader.ProcessInfoLoader;
 import sample.utils.processloader.PropertyProcessEntry;
@@ -57,7 +56,7 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
         try {
             // Загружаем корневой макет из fxml файла.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("resources/main_layout.fxml"));
+            loader.setLocation(Main.class.getResource("layouts/main_layout.fxml"));
             rootLayout = (AnchorPane) loader.load();
 
             // Отображаем сцену, содержащую корневой макет.
@@ -94,7 +93,7 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
         try {
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("resources/process_edit_layout.fxml"));
+            loader.setLocation(Main.class.getResource("layouts/process_edit_layout.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
             // Создаём диалоговое окно Stage.

@@ -7,6 +7,7 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,9 +17,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="background" stylesheets="@LightTheme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="background" stylesheets="@../resources/LightTheme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.layouts.MainController">
    <children>
-      <SplitPane dividerPositions="0.5768518518518518" layoutX="194.0" layoutY="34.0" prefHeight="666.0" prefWidth="900.0" style="-fx-background-radius: 15;" styleClass="background" stylesheets="@LightTheme.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="34.0">
+      <SplitPane dividerPositions="0.5768518518518518" layoutX="194.0" layoutY="34.0" prefHeight="666.0" prefWidth="900.0" style="-fx-background-radius: 15;" styleClass="background" stylesheets="@../resources/LightTheme.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="34.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
@@ -33,7 +34,7 @@
                   </TableView>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background" stylesheets="@LightTheme.css">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background" stylesheets="@../resources/LightTheme.css">
                <children>
                   <Label alignment="CENTER" layoutX="6.0" prefHeight="65.0" prefWidth="462.0" text="Process Information" textAlignment="CENTER" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="0.0">
                      <font>
@@ -73,25 +74,23 @@
                         <Label text="Type" GridPane.rowIndex="3" />
                         <Label text="Runtime environment" GridPane.rowIndex="4" />
                         <Label text="DEP, ASLR" GridPane.rowIndex="5" />
-                        <Label text=".dll libs" GridPane.rowIndex="11" />
+                        <Label text=".dll libs" GridPane.rowIndex="10" />
                         <Label text="SID" GridPane.rowIndex="7" />
                         <Label text="Integrity Level" GridPane.rowIndex="8" />
                         <Label text="Privileges" GridPane.rowIndex="9" />
-                        <Label text="ACL" GridPane.rowIndex="10" />
                         <Label text="File owner" GridPane.rowIndex="6" />
                         <Label fx:id="parentIDLabel" text="Label" GridPane.columnIndex="1" />
                         <Label fx:id="pidLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label fx:id="typeLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Label fx:id="runEnvLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <Label fx:id="depLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label fx:id="dllLibsLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-                        <Label fx:id="sidLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                         <Label fx:id="intLevelLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                         <Label fx:id="privilegesLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                        <Label fx:id="aclLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                         <Label fx:id="fileOwnerLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                         <Label text="Parent name" GridPane.rowIndex="1" />
                         <Label fx:id="parentNameLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="sidLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <TextField fx:id="dllLibsField" styleClass="background-transparent" stylesheets="@../resources/LightTheme.css" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                      </children>
                   </GridPane>
                   <Button alignment="CENTER" contentDisplay="TOP" layoutX="206.0" layoutY="512.0" mnemonicParsing="false" onAction="#handleEditPerson" prefHeight="32.0" prefWidth="75.0" text="Edit" textAlignment="CENTER" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
@@ -102,7 +101,7 @@
             </AnchorPane>
         </items>
       </SplitPane>
-      <HBox layoutX="665.0" prefHeight="35.0" prefWidth="234.0" spacing="5.0" stylesheets="@LightThemeButton.css" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox layoutX="665.0" prefHeight="35.0" prefWidth="234.0" spacing="5.0" stylesheets="@../resources/LightThemeButton.css" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Button graphicTextGap="8.0" layoutX="197.1875" layoutY="241.0" mnemonicParsing="false" onAction="#handleHideButton" prefHeight="35.0" prefWidth="75.0" text="—">
                <font>
@@ -113,10 +112,10 @@
             <Button cancelButton="true" layoutX="249.375" layoutY="241.0" mnemonicParsing="false" onAction="#handleCloseButton" prefHeight="35.0" prefWidth="75.0" text="X" />
          </children>
       </HBox>
-      <Label layoutX="39.0" prefHeight="35.0" prefWidth="147.0" styleClass="label-light-bright" stylesheets="@LightTheme.css" text="Process Manager" textAlignment="CENTER" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="5.0" />
+      <Label layoutX="39.0" prefHeight="35.0" prefWidth="147.0" styleClass="label-light-bright" stylesheets="@../resources/LightTheme.css" text="Process Manager" textAlignment="CENTER" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="5.0" />
       <ImageView fx:id="" fitHeight="25.0" fitWidth="25.0" layoutX="14.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
          <image>
-            <Image url="@main_icon.png" />
+            <Image url="@../resources/main_icon.png" />
          </image></ImageView>
    </children>
 </AnchorPane>

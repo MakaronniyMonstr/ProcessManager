@@ -107,6 +107,7 @@ public class ProcessInfoLoader {
         if (loader.utilListener == null)
             return;
 
+        loader.utilExecuteService = Executors.newSingleThreadScheduledExecutor();
         loader.utilExecuteService.execute(
                 () -> {
                     try {
@@ -155,7 +156,7 @@ public class ProcessInfoLoader {
 
         loader.processEntries.sort(ProcessEntry::compareTo);
 
-        return loader.processEntries.subList(0, 10);
+        return loader.processEntries;
     }
 
     private UtilTask parseTask(BufferedReader reader) throws IOException {
@@ -164,11 +165,6 @@ public class ProcessInfoLoader {
         List<String> data = new LinkedList<>();
 
         while ((line = reader.readLine()) != null) {
-            //Uninitialized response type
-            if (type == -1)
-                type = line.charAt(0);
-            //Adding console output data
-            else
                 data.add(line);
         }
         reader.close();
