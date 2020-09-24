@@ -50,6 +50,15 @@ public class UtilTask {
         this.command = command;
     }
 
+    public List<String> getData() {
+        return data;
+    }
+
+    public void addData(String data) {
+        this.data.add(data);
+    }
+
+
     public int getCommand() {
         return command;
     }

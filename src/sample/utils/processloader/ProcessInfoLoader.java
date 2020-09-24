@@ -115,7 +115,7 @@ public class ProcessInfoLoader {
 
                         pipe = new ProcessPipe(execPath, task.getStringCommand());
                         loader.utilListener
-                                .onTaskCompleted(parseTask(pipe.getReader()));
+                                .onTaskCompleted(parseTask(pipe.getReader(), task));
 
                         pipe.destroy();
 
@@ -156,19 +156,18 @@ public class ProcessInfoLoader {
 
         loader.processEntries.sort(ProcessEntry::compareTo);
 
+
         return loader.processEntries;
     }
 
-    private UtilTask parseTask(BufferedReader reader) throws IOException {
-        int type = -1;
+    private UtilTask parseTask(BufferedReader reader, UtilTask task) throws IOException {
         String line;
-        List<String> data = new LinkedList<>();
 
+        task.getData().clear();
         while ((line = reader.readLine()) != null) {
-                data.add(line);
+            task.getData().add(line);
         }
-        reader.close();
 
-        return new UtilTask(data, type);
+        return task;
     }
 }
