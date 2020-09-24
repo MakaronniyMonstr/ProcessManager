@@ -11,11 +11,17 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane styleClass="background-grey" stylesheets="@../resources/LightTheme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.layouts.DialogController">
+<AnchorPane style="-fx-background-radius: 15; -fx-border-radius: 15;" styleClass="background-grey" stylesheets="@../resources/LightTheme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.layouts.DialogController">
    <children>
-      <AnchorPane prefHeight="320.0" prefWidth="520.0" styleClass="background-gre-gradient" stylesheets="@../resources/LightTheme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane prefHeight="307.2" prefWidth="506.4" style="-fx-background-radius: 15; -fx-border-radius: 15;" styleClass="background-gre-gradient" stylesheets="@../resources/LightTheme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <GridPane layoutX="91.0" layoutY="75.0" prefHeight="137.0" prefWidth="336.0" AnchorPane.bottomAnchor="88.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="73.0" AnchorPane.topAnchor="75.0">
+            <HBox spacing="5.0" AnchorPane.bottomAnchor="14.799999999999997" AnchorPane.rightAnchor="14.199999999999989">
+               <children>
+                  <Button defaultButton="true" layoutX="197.1875" layoutY="241.0" mnemonicParsing="false" onAction="#handleOk" prefHeight="35.0" prefWidth="100.0" text="OK" />
+                  <Button cancelButton="true" layoutX="249.375" layoutY="241.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="35.0" prefWidth="100.0" text="Cancel" />
+               </children>
+            </HBox>
+            <GridPane prefHeight="137.0" prefWidth="336.0" AnchorPane.bottomAnchor="88.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="73.0" AnchorPane.topAnchor="75.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="174.20001220703125" minWidth="10.0" prefWidth="118.6" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="226.99998474121094" minWidth="10.0" prefWidth="217.79999999999998" />
@@ -46,13 +52,10 @@
                   <TextField fx:id="aclField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
-            <HBox layoutX="281.0" layoutY="250.0" spacing="5.0" AnchorPane.bottomAnchor="14.799999999999997" AnchorPane.rightAnchor="14.199999999999989">
-               <children>
-                  <Button defaultButton="true" layoutX="197.1875" layoutY="241.0" mnemonicParsing="false" onAction="#handleOk" prefHeight="35.0" prefWidth="100.0" text="OK" />
-                  <Button cancelButton="true" layoutX="249.375" layoutY="241.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="35.0" prefWidth="100.0" text="Cancel" />
-               </children>
-            </HBox>
          </children>
+         <padding>
+            <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+         </padding>
       </AnchorPane>
    </children>
    <padding>

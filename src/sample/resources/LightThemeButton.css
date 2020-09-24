@@ -2,7 +2,8 @@
     -fx-padding: 5 22 5 22;
     -fx-border-color: #e2e2e2;
     -fx-border-width: 0;
-    -fx-background-radius: 0;
+    -fx-background-radius: 25;
+    -fx-border-radius: 25;
     -fx-background-color: transparent;
     -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     -fx-font-size: 11pt;
