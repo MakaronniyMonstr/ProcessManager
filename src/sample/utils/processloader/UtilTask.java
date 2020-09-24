@@ -63,6 +63,20 @@ public class UtilTask {
         return command;
     }
 
+    public void setCommand(int command) {
+        this.command = command;
+    }
+
+    public String getStringData()
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        data.forEach(s -> {
+            stringBuilder.append(s);
+        });
+
+        return stringBuilder.toString();
+    }
+
     public String getStringCommand() {
         return stringCommands[getCommand()] + " " + data.get(0);
     }

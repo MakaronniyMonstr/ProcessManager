@@ -1,10 +1,9 @@
-package sample.controllers;
+package sample.layouts;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import sample.utils.processloader.ProcessEntry;
 import sample.utils.processloader.PropertyProcessEntry;
 
 public class DialogController {
