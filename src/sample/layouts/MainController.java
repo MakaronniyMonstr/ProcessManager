@@ -21,27 +21,27 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
     private TableColumn<PropertyProcessEntry, String> thirdColumn;
 
     @FXML
-    private Label parentIDLabel;
+    private TextField parentIDField;
     @FXML
-    private Label parentNameLabel;
+    private TextField parentNameField;
     @FXML
-    private Label pidLabel;
+    private TextField pidField;
     @FXML
-    private Label typeLabel;
+    private TextField typeField;
     @FXML
-    private Label runEnvLabel;
+    private TextField runEnvField;
     @FXML
-    private Label depLabel;
+    private TextField depField;
+    @FXML
+    private TextField sidField;
+    @FXML
+    private TextField intLevelField;
+    @FXML
+    private TextField fileOwnerField;
     @FXML
     private TextField dllLibsField;
     @FXML
-    private Label sidLabel;
-    @FXML
-    private Label intLevelLabel;
-    @FXML
-    private Label privilegesLabel;
-    @FXML
-    private Label fileOwnerLabel;
+    private TextField privilegesField;
 
     // Ссылка на главное приложение.
     private Main mainApp;
@@ -78,38 +78,35 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
     private void showProcessDetails(PropertyProcessEntry processEntry) throws IOException {
             if (processEntry != null) {
 
-                parentIDLabel.textProperty().bind(processEntry.parentProcessIDProperty());
-                parentNameLabel.setText(findParentName(processEntry));//how to bind
-                pidLabel.textProperty().bind(processEntry.processIDProperty());
-                typeLabel.textProperty().bind(processEntry.processTypeProperty());
-                runEnvLabel.textProperty().bind(processEntry.runtimeProperty());
-                depLabel.textProperty().bind(processEntry.spaceLayoutProperty());
-                sidLabel.textProperty().bind(processEntry.SIDProperty());
-                fileOwnerLabel.textProperty().bind(processEntry.ownerNameProperty());
+                parentIDField.textProperty().bind(processEntry.parentProcessIDProperty());
+                parentNameField.setText(findParentName(processEntry));//how to bind
+                pidField.textProperty().bind(processEntry.processIDProperty());
+                typeField.textProperty().bind(processEntry.processTypeProperty());
+                runEnvField.textProperty().bind(processEntry.runtimeProperty());
+                depField.textProperty().bind(processEntry.spaceLayoutProperty());
+                sidField.textProperty().bind(processEntry.SIDProperty());
+                fileOwnerField.textProperty().bind(processEntry.ownerNameProperty());
 
                 UtilTask utilTask = new UtilTask(UtilTask.GET_PROCESS_INTEGRITY_LEVEL, processEntry.getProcessID());
                 ProcessInfoLoader.getInstance().runNewTask(utilTask);
-                /*utilTask.setCommand(UtilTask.GET_PROCESS_PRIVILEGES);
-                ProcessInfoLoader.getInstance().runNewTask(utilTask);
-                utilTask.setCommand(UtilTask.GET_MODULES_LIST);
-                ProcessInfoLoader.getInstance().runNewTask(utilTask);*/
-                //intLevelLabel.setText("");
-                //privilegesLabel.setText("");
-
+                UtilTask utilTaskPrivileges = new UtilTask(UtilTask.GET_PROCESS_PRIVILEGES, processEntry.getProcessID());
+                ProcessInfoLoader.getInstance().runNewTask(utilTaskPrivileges);
+                UtilTask utilTaskModule = new UtilTask(UtilTask.GET_MODULES_LIST, processEntry.getProcessID());
+                ProcessInfoLoader.getInstance().runNewTask(utilTaskModule);
 
             } else {
 
-                parentIDLabel.setText("");
-                parentNameLabel.setText("");
-                pidLabel.setText("");
-                typeLabel.setText("");
-                runEnvLabel.setText("");
-                depLabel.setText("");
+                parentIDField.setText("");
+                parentNameField.setText("");
+                pidField.setText("");
+                typeField.setText("");
+                runEnvField.setText("");
+                depField.setText("");
                 dllLibsField.setText("");
-                sidLabel.setText("");
-                intLevelLabel.setText("");
-                privilegesLabel.setText("");
-                fileOwnerLabel.setText("");
+                sidField.setText("");
+                intLevelField.setText("");
+                privilegesField.setText("");
+                fileOwnerField.setText("");
 
             }
     }
@@ -174,16 +171,18 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
 
     @Override
     public void onTaskCompleted(UtilTask task) {
+
         Platform.runLater(()->{
 
-            if (task.getCommand() == UtilTask.GET_PROCESS_INTEGRITY_LEVEL)
-                intLevelLabel.setText(task.getStringData());
-            //else if (task.getCommand() == UtilTask.GET_PROCESS_INTEGRITY_LEVEL)
-                //intLevelLabel.setText(task.getStringData());
-            //ProcessEntry = Runtime.getRuntime().exec("procapi.exe " + utilTask.getStringCommand());
-            //intLevelLabel.setText(String.valueOf(Runtime.getRuntime().exec("procapi.exe " + utilTask.getStringCommand())));
-            //privilegesLabel.setText("no");//Runtime.getRuntime().exec();
-            //aclLabel.setText("no");//Runtime.getRuntime().exec();
+            if (task.getCommand() == UtilTask.GET_PROCESS_INTEGRITY_LEVEL && task.getStringData()!= null)
+                intLevelField.setText(task.getStringData());
+
+            if (task.getCommand() == UtilTask.GET_PROCESS_PRIVILEGES && task.getStringData()!= null)
+                privilegesField.setText(task.getStringData());
+
+            if (task.getCommand() == UtilTask.GET_MODULES_LIST && task.getStringData()!= null)
+                dllLibsField.setText(task.getStringData());
+
         });
     }
 }
