@@ -18,11 +18,11 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="background" stylesheets="@LightTheme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.MainController">
    <children>
-      <SplitPane dividerPositions="0.5768518518518518" layoutX="194.0" layoutY="34.0" prefHeight="666.0" prefWidth="900.0" style="-fx-background-radius: 15;" styleClass="background" stylesheets="@LightTheme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="34.0">
+      <SplitPane dividerPositions="0.5768518518518518" layoutX="194.0" layoutY="34.0" prefHeight="666.0" prefWidth="900.0" style="-fx-background-radius: 15;" styleClass="background" stylesheets="@LightTheme.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="34.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <TableView fx:id="processTable" layoutX="113.0" layoutY="81.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="processTable" layoutX="113.0" layoutY="81.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
                       <TableColumn fx:id="firstColumn" prefWidth="84.7999866604805" text="Process Name" />
                         <TableColumn fx:id="thirdColumn" prefWidth="287.2000427246094" text="Path" />

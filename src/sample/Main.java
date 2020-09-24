@@ -66,7 +66,7 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
             rootLayout = (AnchorPane) loader.load();
 
             // Отображаем сцену, содержащую корневой макет.
-            Scene scene = new Scene(rootLayout, 1100, 700);
+            Scene scene = new Scene(rootLayout, 1200, 800);
 
             scene.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
