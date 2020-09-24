@@ -143,9 +143,6 @@ public class ProcessInfoLoader {
             }
             else {
                 ProcessEntry process;
-                //Debug info
-                params.forEach(s -> System.out.print(s + " "));
-                System.out.println();
 
                 process = new ProcessEntry(params);
                 params.clear();
@@ -156,7 +153,7 @@ public class ProcessInfoLoader {
 
         loader.processEntries.sort(ProcessEntry::compareTo);
 
-
+        System.out.println("" + loader.processEntries.size() + " processes loaded.");
         return loader.processEntries;
     }
 
