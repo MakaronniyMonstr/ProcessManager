@@ -90,7 +90,7 @@
                         <Label text="Parent name" GridPane.rowIndex="1" />
                         <Label fx:id="parentNameLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label fx:id="sidLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                        <TextField fx:id="dllLibsField" styleClass="background-transparent" stylesheets="@../resources/LightTheme.css" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                        <TextField fx:id="dllLibsField" style="-fx-font-family: &quot;Segoe UI Light&quot;; -fx-opacity: 0.6; -fx-background-color: transparent; -fx-font-size: 13pt;" styleClass="label" stylesheets="@../resources/LightTheme.css" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                      </children>
                   </GridPane>
                   <Button alignment="CENTER" contentDisplay="TOP" layoutX="206.0" layoutY="512.0" mnemonicParsing="false" onAction="#handleEditPerson" prefHeight="32.0" prefWidth="75.0" text="Edit" textAlignment="CENTER" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
