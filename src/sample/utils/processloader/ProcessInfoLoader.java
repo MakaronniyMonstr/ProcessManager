@@ -1,6 +1,5 @@
 package sample.utils.processloader;
 
-import sample.utils.customlist.UpdatingArrayList;
 import sample.utils.processpipe.ProcessPipe;
 
 import java.io.BufferedReader;
@@ -24,7 +23,7 @@ public class ProcessInfoLoader {
     private ScheduledExecutorService processesUpdateService;
     private ScheduledExecutorService utilExecuteService;
     //Processes list
-    private UpdatingArrayList processEntries = new UpdatingArrayList();
+    private List<ProcessEntry> processEntries = new ArrayList<>(200);
 
     //Updates your UI.
     public interface OnProcessesInfoUpdatedListener {
@@ -156,7 +155,7 @@ public class ProcessInfoLoader {
 
         loader.processEntries.sort(ProcessEntry::compareTo);
 
-        return loader.processEntries;
+        return loader.processEntries.subList(0, 10);
     }
 
     private UtilTask parseTask(BufferedReader reader) throws IOException {
