@@ -1,8 +1,10 @@
-package sample.utils.processloader;
+package sample.utils.processinfoloader;
 
 import sample.utils.processpipe.ProcessPipe;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
@@ -47,6 +49,18 @@ public class ProcessInfoLoader {
         }
 
         return loader;
+    }
+
+    public boolean isProcApiInstalled() {
+        File file = new File(Paths.get("")
+                .toAbsolutePath()
+                .toString());
+
+        return Arrays.stream(
+                Objects.requireNonNull(
+                        file.list((dir, name) -> name.equals(EXECUTABLE_NAME)))
+                )
+                .count() > 0;
     }
 
     //Additional functionality.
@@ -96,7 +110,7 @@ public class ProcessInfoLoader {
     }
 
     public void stopService() {
-        loader.utilExecuteService.shutdown();
+        loader.utilExecuteService.shutdownNow();
         try {
             loader.utilExecuteService.awaitTermination(500, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) { e.printStackTrace(); }
@@ -114,8 +128,10 @@ public class ProcessInfoLoader {
                         ProcessPipe pipe;
 
                         pipe = new ProcessPipe(execPath, task.getStringCommand());
-                        loader.utilListener
-                                .onTaskCompleted(parseTask(pipe.getReader(), task));
+                        synchronized (this) {
+                            loader.utilListener
+                                    .onTaskCompleted(parseTask(pipe.getReader(), task));
+                        }
 
                         pipe.destroy();
 
@@ -164,6 +180,8 @@ public class ProcessInfoLoader {
         while ((line = reader.readLine()) != null) {
             task.getData().add(line + " ");
         }
+
+        System.out.println(task.getStringCommand() + " command was received.");
 
         return task;
     }

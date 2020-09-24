@@ -1,4 +1,4 @@
-package sample.utils.processloader;
+package sample.utils.processinfoloader;
 
 import java.util.LinkedList;
 import java.util.List;

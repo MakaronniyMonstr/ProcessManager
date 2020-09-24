@@ -15,16 +15,15 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import sample.layouts.DialogController;
 import sample.layouts.MainController;
-import sample.utils.processloader.ProcessEntry;
-import sample.utils.processloader.ProcessInfoLoader;
-import sample.utils.processloader.PropertyProcessEntry;
+import sample.utils.processinfoloader.ProcessEntry;
+import sample.utils.processinfoloader.ProcessInfoLoader;
+import sample.utils.processinfoloader.PropertyProcessEntry;
 
 import java.io.IOException;
 import java.util.List;
 
 public class Main extends Application implements ProcessInfoLoader.OnProcessesInfoUpdatedListener {
 
-    ProcessInfoLoader loader;
     private Stage primaryStage;
     private AnchorPane rootLayout;
     private ObservableList<PropertyProcessEntry> processEntryList;
@@ -35,9 +34,15 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
     {
         processEntryList = FXCollections.observableArrayList();
 
-        this.loader = ProcessInfoLoader.getInstance();
-        this.loader.setOnProcessesUpdatedListener(this);
-        this.loader.runService();
+        ProcessInfoLoader loader = ProcessInfoLoader.getInstance();
+
+        // If procapi.exe doesn't exist
+        if (!loader.isProcApiInstalled()) {
+            closeApplication();
+        }
+
+        loader.setOnProcessesUpdatedListener(this);
+        loader.runService();
     }
 
     @Override
@@ -120,9 +125,9 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
         }
     }
 
-    public void  closeApplication()
+    public void closeApplication()
     {
-        loader.destroy();
+        ProcessInfoLoader.getInstance().destroy();
         Platform.exit();
         System.exit(0);
     }
@@ -157,7 +162,6 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
     @Override
     public void onProcessesInfoLoaded(List<ProcessEntry> processesList) {
         Platform.runLater(()->{
-            if (processEntryList.size() > 0) {
                 for (int i = 0; i < processesList.size(); i++) {
                     if (i >= processEntryList.size()) {
                         processEntryList.add(new PropertyProcessEntry(processesList.get(i)));
@@ -169,12 +173,6 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
                 if (processesList.size() < processEntryList.size()) {
                     processEntryList.remove(processesList.size());
                 }
-            }
-            else {
-                processesList.forEach(processEntry -> {
-                    processEntryList.add(new PropertyProcessEntry(processEntry));
-                });
-            }
         });
     }
 }

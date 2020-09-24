@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import sample.utils.processloader.PropertyProcessEntry;
+import sample.utils.processinfoloader.PropertyProcessEntry;
 
 public class DialogController {
 

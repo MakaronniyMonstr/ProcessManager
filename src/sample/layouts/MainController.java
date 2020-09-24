@@ -5,9 +5,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import sample.Main;
-import sample.utils.processloader.ProcessInfoLoader;
-import sample.utils.processloader.PropertyProcessEntry;
-import sample.utils.processloader.UtilTask;
+import sample.utils.processinfoloader.ProcessInfoLoader;
+import sample.utils.processinfoloader.PropertyProcessEntry;
+import sample.utils.processinfoloader.UtilTask;
 
 import java.io.IOException;
 
@@ -87,12 +87,24 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
                 sidField.textProperty().bind(processEntry.SIDProperty());
                 fileOwnerField.textProperty().bind(processEntry.ownerNameProperty());
 
-                UtilTask utilTask = new UtilTask(UtilTask.GET_PROCESS_INTEGRITY_LEVEL, processEntry.getProcessID());
-                ProcessInfoLoader.getInstance().runNewTask(utilTask);
-                UtilTask utilTaskPrivileges = new UtilTask(UtilTask.GET_PROCESS_PRIVILEGES, processEntry.getProcessID());
-                ProcessInfoLoader.getInstance().runNewTask(utilTaskPrivileges);
-                UtilTask utilTaskModule = new UtilTask(UtilTask.GET_MODULES_LIST, processEntry.getProcessID());
-                ProcessInfoLoader.getInstance().runNewTask(utilTaskModule);
+                ProcessInfoLoader.getInstance().runNewTask(
+                        new UtilTask(
+                                UtilTask.GET_PROCESS_INTEGRITY_LEVEL,
+                                processEntry.getProcessID()
+                        )
+                );
+                ProcessInfoLoader.getInstance().runNewTask
+                        (new UtilTask(
+                                UtilTask.GET_PROCESS_PRIVILEGES,
+                                processEntry.getProcessID()
+                        )
+                );
+                ProcessInfoLoader.getInstance().runNewTask(
+                        new UtilTask(
+                                UtilTask.GET_MODULES_LIST,
+                                processEntry.getProcessID()
+                        )
+                );
 
             } else {
 
@@ -172,15 +184,15 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
     @Override
     public void onTaskCompleted(UtilTask task) {
 
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
 
-            if (task.getCommand() == UtilTask.GET_PROCESS_INTEGRITY_LEVEL && task.getStringData()!= null)
+            if (task.getCommand() == UtilTask.GET_PROCESS_INTEGRITY_LEVEL && task.getStringData() != null)
                 intLevelField.setText(task.getStringData());
 
-            if (task.getCommand() == UtilTask.GET_PROCESS_PRIVILEGES && task.getStringData()!= null)
+            if (task.getCommand() == UtilTask.GET_PROCESS_PRIVILEGES && task.getStringData() != null)
                 privilegesField.setText(task.getStringData());
 
-            if (task.getCommand() == UtilTask.GET_MODULES_LIST && task.getStringData()!= null)
+            if (task.getCommand() == UtilTask.GET_MODULES_LIST && task.getStringData() != null)
                 dllLibsField.setText(task.getStringData());
 
         });

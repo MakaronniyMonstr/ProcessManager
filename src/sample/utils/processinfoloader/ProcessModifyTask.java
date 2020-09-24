@@ -1,4 +1,4 @@
-package sample.utils.processloader;
+package sample.utils.processinfoloader;
 
 public class ProcessModifyTask implements Comparable<ProcessModifyTask> {
     public static final int ADD    = 0x0;

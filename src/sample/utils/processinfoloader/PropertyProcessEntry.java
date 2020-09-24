@@ -1,4 +1,4 @@
-package sample.utils.processloader;
+package sample.utils.processinfoloader;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

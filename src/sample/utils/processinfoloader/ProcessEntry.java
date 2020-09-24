@@ -1,14 +1,6 @@
-package sample.utils.processloader;
+package sample.utils.processinfoloader;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
 
 public class ProcessEntry implements Comparable<ProcessEntry> {
 
@@ -26,7 +18,6 @@ public class ProcessEntry implements Comparable<ProcessEntry> {
     private String runtime;
     //DEP/ASLR
     private String spaceLayout;
-    private List<ModuleEntry> moduleEntries = new ArrayList<>();
 
     //Additional Information
     private int basePriority;
@@ -172,10 +163,6 @@ public class ProcessEntry implements Comparable<ProcessEntry> {
         this.spaceLayout = spaceLayout;
     }
 
-    public void setModuleEntries(List<ModuleEntry> moduleEntries) {
-        this.moduleEntries = moduleEntries;
-    }
-
     public int getBasePriority() {
         return basePriority;
     }
@@ -190,14 +177,6 @@ public class ProcessEntry implements Comparable<ProcessEntry> {
 
     public void setCountThreads(int countThreads) {
         this.countThreads = countThreads;
-    }
-
-    public void addModule(ModuleEntry moduleEntry) {
-        moduleEntries.add(moduleEntry);
-    }
-
-    public List<ModuleEntry> getModuleEntries() {
-        return moduleEntries;
     }
 
     @Override
