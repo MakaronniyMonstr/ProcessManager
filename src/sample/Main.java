@@ -2,6 +2,7 @@ package sample;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -25,13 +26,14 @@ import java.util.List;
 
 public class Main extends Application implements ProcessInfoLoader.OnProcessesInfoUpdatedListener {
 
+    private double xOffset;
+    private double yOffset;
     private Stage primaryStage;
     private AnchorPane rootLayout;
     private int STAGE_WIDTH = 1200;
     private int STAGE_HEIGHT = 800;
     private ObservableList<PropertyProcessEntry> processEntryList;
-    private double xOffset;
-    private double yOffset;
+
 
     public Main()
     {
@@ -41,6 +43,14 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
 
         // If procapi.exe doesn't exist
         if (!loader.isProcApiInstalled()) {
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initOwner(null);
+            alert.setTitle("Error in procapi.exe");
+            alert.setHeaderText("Can`t find procapi.exe");
+            alert.setContentText("Please add procapi.exe to programm folder");
+            alert.showAndWait();
+
             closeApplication();
         }
 
