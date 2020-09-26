@@ -32,6 +32,45 @@ public class UtilTask {
             "-fis"//setFileIntegrityLevel
     };
 
+    public static String privileges[] = {
+            "SeAssignPrimaryTokenPrivilege",
+            "SeAuditPrivilege",
+            "SeBackupPrivilege",
+            "SeChangeNotifyPrivilege",
+            "SeCreateGlobalPrivilege",
+            "SeCreatePagefilePrivilege",
+            "SeCreatePermanentPrivilege",
+            "SeCreateSymbolicLinkPrivilege",
+            "SeCreateTokenPrivilege",
+            "SeDebugPrivilege",
+            "SeDelegateSessionUserImpersonatePrivilege",
+            "SeEnableDelegationPrivilege",
+            "SeImpersonatePrivilege",
+            "SeIncreaseBasePriorityPrivilege",
+            "SeIncreaseQuotaPrivilege",
+            "SeIncreaseWorkingSetPrivilege",
+            "SeLoadDriverPrivilege",
+            "SeLockMemoryPrivilege",
+            "SeMachineAccountPrivilege",
+            "SeManageVolumePrivilege",
+            "SeProfileSingleProcessPrivilege",
+            "SeRelabelPrivilege",
+            "SeRemoteShutdownPrivilege",
+            "SeRestorePrivilege",
+            "SeSecurityPrivilege",
+            "SeShutdownPrivilege",
+            "SeSyncAgentPrivilege",
+            "SeSystemEnvironmentPrivilege",
+            "SeSystemProfilePrivilege",
+            "SeSystemtimePrivilege",
+            "SeTakeOwnershipPrivilege",
+            "SeTcbPrivilege",
+            "SeTimeZonePrivilege",
+            "SeTrustedCredManAccessPrivilege",
+            "SeUndockPrivilege",
+            "SeUnsolicitedInputPrivilege"
+    };
+
     private int command;
     private List<String> data;
 
