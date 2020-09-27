@@ -5,14 +5,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import sample.Main;
-import sample.utils.processinfoloader.ProcessEntry;
 import sample.utils.processinfoloader.ProcessInfoLoader;
 import sample.utils.processinfoloader.PropertyProcessEntry;
 import sample.utils.processinfoloader.UtilTask;
 
 import java.io.IOException;
-import java.util.Optional;
-
 
 public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedListener {
     @FXML

@@ -33,6 +33,10 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
     private ObservableList<PropertyProcessEntry> processEntryList;
     private MainController controller;
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     public Main()
     {
         processEntryList = FXCollections.observableArrayList();
@@ -164,10 +168,6 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
 
     public ObservableList<PropertyProcessEntry> getProcessEntryList() {
         return processEntryList;
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 
     @Override
