@@ -108,8 +108,7 @@ public class DialogController implements ProcessInfoLoader.OnUtilTaskCompletedLi
         //}
 
         String intLevel = intLevelField.getText();
-        if (intLevel == null || intLevel.length() == 0
-                             && (intLevel != "High" && intLevel != "Medium" && intLevel != "Untrusted")) {
+        if (intLevel == null || intLevel.length() == 0) {
             errorMessage += "No valid level!\n";
         }
 
@@ -119,8 +118,8 @@ public class DialogController implements ProcessInfoLoader.OnUtilTaskCompletedLi
 
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.initOwner(dialogStage);
-            alert.setTitle("Invalid Fields");
-            alert.setHeaderText("Please correct invalid fields");
+            alert.setTitle("Invalid data!");
+            alert.setHeaderText("Please enter valid data!");
             alert.setContentText(errorMessage);
 
             alert.showAndWait();
