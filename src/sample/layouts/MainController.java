@@ -11,6 +11,7 @@ import sample.utils.processinfoloader.PropertyProcessEntry;
 import sample.utils.processinfoloader.UtilTask;
 
 import java.io.IOException;
+import java.util.Optional;
 
 
 public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedListener {
@@ -46,6 +47,7 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
     @FXML
     private TextField aclField;
 
+    private PropertyProcessEntry selectedItem = null;
     // Ссылка на главное приложение.
     private Main mainApp;
 
@@ -66,6 +68,7 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
         processTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     try {
+                        selectedItem = new PropertyProcessEntry(newValue);
                         showProcessDetails(newValue);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -142,6 +145,7 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
     @FXML
     private void handleEditPerson() {
         PropertyProcessEntry selectedProcess = processTable.getSelectionModel().getSelectedItem();
+
         if (selectedProcess != null) {
             boolean okClicked = mainApp.showProcessEditDialog(selectedProcess);
             if (okClicked) {
@@ -202,5 +206,20 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
 
     public TableView<PropertyProcessEntry> getProcessTable() {
         return processTable;
+    }
+
+    public void checkSelectedItemIsCorrect() {
+        processTable.sort();
+
+        if (selectedItem != null) {
+            int pos = processTable.getItems().indexOf(selectedItem);
+
+            if (pos >= 0)
+                processTable.getSelectionModel().select(pos);
+            else {
+                processTable.getSelectionModel().clearSelection();
+                selectedItem = null;
+            }
+        }
     }
 }

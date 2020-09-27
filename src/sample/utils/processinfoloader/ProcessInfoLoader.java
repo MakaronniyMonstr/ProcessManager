@@ -174,7 +174,7 @@ public class ProcessInfoLoader {
         }
 
         System.out.println(loader.processEntries.size() + " processes loaded.");
-        return loader.processEntries;
+        return loader.processEntries.subList(0, 10);
     }
 
     private UtilTask parseTask(BufferedReader reader, UtilTask task) throws IOException {

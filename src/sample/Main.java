@@ -185,7 +185,7 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
                     processEntryList.remove(processesList.size());
                 }
 
-                controller.getProcessTable().sort();
+                controller.checkSelectedItemIsCorrect();
         });
     }
 }

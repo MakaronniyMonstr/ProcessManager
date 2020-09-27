@@ -5,6 +5,7 @@ import javafx.beans.property.StringProperty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PropertyProcessEntry {
     private StringProperty processName;
@@ -26,6 +27,24 @@ public class PropertyProcessEntry {
     //Additional Information
     private StringProperty basePriority;
     private StringProperty countThreads;
+
+    public PropertyProcessEntry(PropertyProcessEntry processEntry) {
+        this.processName = new SimpleStringProperty(processEntry.getProcessName());
+        this.processID = new SimpleStringProperty(processEntry.getProcessID());
+        /*
+        this.exePath = new SimpleStringProperty(processEntry.getExePath());
+        this.parentProcessID = new SimpleStringProperty(processEntry.getParentProcessID());
+        this.ownerName = new SimpleStringProperty(processEntry.getOwnerDomain());
+        this.ownerDomain = new SimpleStringProperty(processEntry.getOwnerDomain());
+        this.SID = new SimpleStringProperty(processEntry.getSID());
+        this.processType = new SimpleStringProperty(processEntry.getProcessType());
+        this.runtime = new SimpleStringProperty(processEntry.getRuntime());
+        this.spaceLayout = new SimpleStringProperty(processEntry.getSpaceLayout());
+        this.basePriority = new SimpleStringProperty(getBasePriority());
+        this.countThreads = new SimpleStringProperty(processEntry.getCountThreads());
+
+         */
+    }
 
     public PropertyProcessEntry(ProcessEntry processEntry) {
         this.processName = new SimpleStringProperty(processEntry.getProcessName());
@@ -159,5 +178,23 @@ public class PropertyProcessEntry {
 
     public StringProperty countThreadsProperty() {
         return countThreads;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PropertyProcessEntry that = (PropertyProcessEntry) o;
+        String a = processName.get();
+        String b = ((PropertyProcessEntry) o).getProcessName();
+
+        return this.getProcessName().equals(that.getProcessName()) &&
+                getProcessID().equals(that.getProcessID());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(processName, processID);
     }
 }

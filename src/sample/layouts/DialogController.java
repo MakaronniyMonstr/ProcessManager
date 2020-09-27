@@ -109,7 +109,7 @@ public class DialogController implements ProcessInfoLoader.OnUtilTaskCompletedLi
 
         String intLevel = intLevelField.getText();
         if (intLevel == null || intLevel.length() == 0) {
-            errorMessage += "No valid level!\n";
+            errorMessage += "Invalid level!\n";
         }
 
         if (errorMessage.length() == 0) {
