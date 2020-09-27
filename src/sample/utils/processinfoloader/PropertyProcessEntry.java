@@ -29,21 +29,10 @@ public class PropertyProcessEntry {
     private StringProperty countThreads;
 
     public PropertyProcessEntry(PropertyProcessEntry processEntry) {
-        this.processName = new SimpleStringProperty(processEntry.getProcessName());
-        this.processID = new SimpleStringProperty(processEntry.getProcessID());
-        /*
-        this.exePath = new SimpleStringProperty(processEntry.getExePath());
-        this.parentProcessID = new SimpleStringProperty(processEntry.getParentProcessID());
-        this.ownerName = new SimpleStringProperty(processEntry.getOwnerDomain());
-        this.ownerDomain = new SimpleStringProperty(processEntry.getOwnerDomain());
-        this.SID = new SimpleStringProperty(processEntry.getSID());
-        this.processType = new SimpleStringProperty(processEntry.getProcessType());
-        this.runtime = new SimpleStringProperty(processEntry.getRuntime());
-        this.spaceLayout = new SimpleStringProperty(processEntry.getSpaceLayout());
-        this.basePriority = new SimpleStringProperty(getBasePriority());
-        this.countThreads = new SimpleStringProperty(processEntry.getCountThreads());
-
-         */
+        try {
+            this.processName = new SimpleStringProperty(processEntry.getProcessName());
+            this.processID = new SimpleStringProperty(processEntry.getProcessID());
+        } catch (NullPointerException e) { System.out.println("Can not find selected item"); }
     }
 
     public PropertyProcessEntry(ProcessEntry processEntry) {
@@ -186,8 +175,6 @@ public class PropertyProcessEntry {
         if (o == null || getClass() != o.getClass()) return false;
 
         PropertyProcessEntry that = (PropertyProcessEntry) o;
-        String a = processName.get();
-        String b = ((PropertyProcessEntry) o).getProcessName();
 
         return this.getProcessName().equals(that.getProcessName()) &&
                 getProcessID().equals(that.getProcessID());
