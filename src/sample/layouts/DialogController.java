@@ -133,7 +133,6 @@ public class DialogController implements ProcessInfoLoader.OnUtilTaskCompletedLi
     public void onTaskCompleted(UtilTask task) {
 
         Platform.runLater(() -> {
-
             if (task.getCommand() == UtilTask.GET_PROCESS_INTEGRITY_LEVEL && task.getStringData() != null)
                 intLevelField.setText(task.getStringData());
             if (task.getCommand() == UtilTask.GET_PROCESS_PRIVILEGES && task.getStringData() != null)

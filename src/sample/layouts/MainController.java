@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import sample.Main;
+import sample.utils.processinfoloader.ProcessEntry;
 import sample.utils.processinfoloader.ProcessInfoLoader;
 import sample.utils.processinfoloader.PropertyProcessEntry;
 import sample.utils.processinfoloader.UtilTask;
@@ -12,7 +13,7 @@ import sample.utils.processinfoloader.UtilTask;
 import java.io.IOException;
 
 
-public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedListener{
+public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedListener {
     @FXML
     private TableView<PropertyProcessEntry> processTable;
     @FXML
@@ -50,7 +51,9 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
 
     private boolean maxSize = false;
 
-    public MainController() { ProcessInfoLoader.getInstance().addOnUtilTaskCompletedListener(this); }
+    public MainController() {
+        ProcessInfoLoader.getInstance().addOnUtilTaskCompletedListener(this);
+    }
 
     @FXML
     private void initialize() throws IOException {
@@ -79,9 +82,8 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
 
     private void showProcessDetails(PropertyProcessEntry processEntry) throws IOException {
             if (processEntry != null) {
-
                 parentIDField.textProperty().bind(processEntry.parentProcessIDProperty());
-                parentNameField.setText(findParentName(processEntry));//how to bind
+                parentNameField.setText(findParentName(processEntry));
                 pidField.textProperty().bind(processEntry.processIDProperty());
                 typeField.textProperty().bind(processEntry.processTypeProperty());
                 runEnvField.textProperty().bind(processEntry.runtimeProperty());
@@ -110,10 +112,9 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
                 );
 
             } else {
-
-                parentIDField.setText("");
-                parentNameField.setText("");
-                pidField.setText("");
+                parentIDField.setText("Привет вероника!");
+                parentNameField.setText("Как дела?");
+                pidField.setText("Как жизнь?");
                 typeField.setText("");
                 runEnvField.setText("");
                 depField.setText("");
@@ -123,7 +124,6 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
                 privilegesField.setText("");
                 fileOwnerField.setText("");
                 aclField.setText("");
-
             }
     }
 
@@ -135,6 +135,7 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
             if (tmp.getProcessID().equals(childProcess.getParentProcessID()))
                 return tmp.getProcessName();
         }
+
         return "UNKNOWN";
     }
 
@@ -187,9 +188,7 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
 
     @Override
     public void onTaskCompleted(UtilTask task) {
-
         Platform.runLater(() -> {
-
             if (task.getCommand() == UtilTask.GET_PROCESS_INTEGRITY_LEVEL && task.getStringData() != null)
                 intLevelField.setText(task.getStringData());
 
@@ -198,7 +197,10 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
 
             if (task.getCommand() == UtilTask.GET_MODULES_LIST && task.getStringData() != null)
                 dllLibsField.setText(task.getStringData());
-
         });
+    }
+
+    public TableView<PropertyProcessEntry> getProcessTable() {
+        return processTable;
     }
 }

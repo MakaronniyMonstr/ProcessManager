@@ -1,7 +1,6 @@
 package sample.utils.processpipe;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 
 public class ProcessPipe {
     private Process process;

@@ -1,10 +1,8 @@
 package sample;
 
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.application.Application;
@@ -33,7 +31,7 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
     private int STAGE_WIDTH = 1200;
     private int STAGE_HEIGHT = 800;
     private ObservableList<PropertyProcessEntry> processEntryList;
-
+    private MainController controller;
 
     public Main()
     {
@@ -84,26 +82,20 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
 
             scene.setFill(Color.TRANSPARENT);
 
-            scene.setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    xOffset = primaryStage.getX() - event.getScreenX();
-                    yOffset = primaryStage.getY() - event.getScreenY();
-                }
+            scene.setOnMousePressed(event -> {
+                xOffset = primaryStage.getX() - event.getScreenX();
+                yOffset = primaryStage.getY() - event.getScreenY();
             });
 
-            scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    primaryStage.setX(event.getScreenX() + xOffset);
-                    primaryStage.setY(event.getScreenY() + yOffset);
-                }
+            scene.setOnMouseDragged(event -> {
+                primaryStage.setX(event.getScreenX() + xOffset);
+                primaryStage.setY(event.getScreenY() + yOffset);
             });
 
             primaryStage.setScene(scene);
             primaryStage.show();
 
-            MainController controller = loader.getController();
+            controller = loader.getController();
             controller.setMainApp(this);
 
         } catch (IOException e) {
@@ -192,6 +184,8 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
                 if (processesList.size() < processEntryList.size()) {
                     processEntryList.remove(processesList.size());
                 }
+
+                controller.getProcessTable().sort();
         });
     }
 }

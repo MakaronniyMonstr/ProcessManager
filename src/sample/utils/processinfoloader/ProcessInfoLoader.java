@@ -139,7 +139,9 @@ public class ProcessInfoLoader {
 
                         pipe.destroy();
 
-                    } catch (IOException e) { e.printStackTrace(); }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
         );
     }
@@ -171,9 +173,7 @@ public class ProcessInfoLoader {
             }
         }
 
-        loader.processEntries.sort(ProcessEntry::compareTo);
-
-        System.out.println("" + loader.processEntries.size() + " processes loaded.");
+        System.out.println(loader.processEntries.size() + " processes loaded.");
         return loader.processEntries;
     }
 
@@ -182,7 +182,7 @@ public class ProcessInfoLoader {
 
         task.getData().clear();
         while ((line = reader.readLine()) != null) {
-            task.getData().add(line + " ");
+            task.getData().add(line);
         }
 
         System.out.println(task.getStringCommand() + " command was received.");

@@ -2,7 +2,7 @@ package sample.utils.processinfoloader;
 
 import java.util.LinkedList;
 
-public class ProcessEntry implements Comparable<ProcessEntry> {
+public class ProcessEntry {
 
     private String processName;
     private int processID;
@@ -55,18 +55,20 @@ public class ProcessEntry implements Comparable<ProcessEntry> {
     }
 
     public ProcessEntry(LinkedList<String> params) {
-        this.processName = params.poll();
-        this.processID = Integer.parseInt(params.poll());
-        this.exePath = params.poll();
-        this.parentProcessID = Integer.parseInt(params.poll());
-        this.ownerName = params.poll();
-        this.ownerDomain = params.poll();
-        this.SID = params.poll();
-        this.processType = params.poll();
-        this.spaceLayout = params.poll();
-        this.countThreads = Integer.parseInt(params.poll());
-        this.basePriority = Integer.parseInt(params.poll());
-        this.runtime = "UNKNOWN";
+        try {
+            this.processName = params.poll();
+            this.processID = Integer.parseInt(params.poll());
+            this.exePath = params.poll();
+            this.parentProcessID = Integer.parseInt(params.poll());
+            this.ownerName = params.poll();
+            this.ownerDomain = params.poll();
+            this.SID = params.poll();
+            this.processType = params.poll();
+            this.spaceLayout = params.poll();
+            this.countThreads = Integer.parseInt(params.poll());
+            this.basePriority = Integer.parseInt(params.poll());
+            this.runtime = "UNKNOWN";
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     public void update(ProcessEntry pe) {
@@ -179,8 +181,19 @@ public class ProcessEntry implements Comparable<ProcessEntry> {
         this.countThreads = countThreads;
     }
 
-    @Override
-    public int compareTo(ProcessEntry o) {
+    public int compareByIdDirectOrder(ProcessEntry o) {
         return Integer.compare(this.processID, o.getProcessID());
+    }
+
+    public int compareByIdReverseOrder(ProcessEntry o) {
+        return Integer.compare(o.getProcessID(), o.getProcessID());
+    }
+
+    public int compareByNameDirectOrder(ProcessEntry o) {
+        return this.processName.compareToIgnoreCase(o.processName);
+    }
+
+    public int compareByNameReverseOrder(ProcessEntry o) {
+        return o.processName.compareToIgnoreCase(this.processName);
     }
 }
