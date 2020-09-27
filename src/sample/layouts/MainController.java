@@ -47,7 +47,7 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
     @FXML
     private TextField aclField;
 
-    private int lastIndex= 0;
+    private int lastIndex= -1;
     private PropertyProcessEntry selectedItem = null;
     // Ссылка на главное приложение.
     private Main mainApp;
@@ -220,8 +220,11 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
                 lastIndex = pos;
             }
             else {
-                processTable.getSelectionModel().select(pos);
+                selectedItem = null;
             }
+        }
+        else if (lastIndex >= 0) {
+            processTable.getSelectionModel().select(lastIndex);
         }
     }
 }
