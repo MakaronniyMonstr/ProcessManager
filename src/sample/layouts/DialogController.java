@@ -72,7 +72,7 @@ public class DialogController implements ProcessInfoLoader.OnUtilTaskCompletedLi
             ProcessInfoLoader.getInstance().runNewTask(
                     new UtilTask(
                             UtilTask.SET_PROCESS_INTEGRITY_LEVEL,
-                            processEntry.getProcessID() + intLevelField.getText()
+                            processEntry.getProcessID() + " " + intLevelField.getText()
                     )
             );
 
