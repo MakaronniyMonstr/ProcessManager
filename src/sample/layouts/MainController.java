@@ -146,6 +146,7 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
 
         if (selectedProcess != null) {
             boolean okClicked = mainApp.showProcessEditDialog(selectedProcess);
+
             if (okClicked) {
                 try {
                     showProcessDetails(selectedProcess);

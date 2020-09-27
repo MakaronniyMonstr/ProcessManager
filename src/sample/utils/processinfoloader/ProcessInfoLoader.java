@@ -182,7 +182,7 @@ public class ProcessInfoLoader {
 
         task.getData().clear();
         while ((line = reader.readLine()) != null) {
-            task.getData().add(line);
+            task.getData().add(line + " ");
         }
 
         System.out.println(task.getStringCommand() + " command was received.");

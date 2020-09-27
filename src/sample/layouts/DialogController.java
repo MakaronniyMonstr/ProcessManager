@@ -9,6 +9,9 @@ import sample.utils.processinfoloader.ProcessInfoLoader;
 import sample.utils.processinfoloader.PropertyProcessEntry;
 import sample.utils.processinfoloader.UtilTask;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DialogController implements ProcessInfoLoader.OnUtilTaskCompletedListener{
 
     @FXML
@@ -24,13 +27,13 @@ public class DialogController implements ProcessInfoLoader.OnUtilTaskCompletedLi
     private Stage dialogStage;
     private PropertyProcessEntry processEntry;
     private boolean okClicked = false;
+    private String startProcessPrivileges;
 
     public DialogController() {ProcessInfoLoader.getInstance().addOnUtilTaskCompletedListener(this);}
 
 
     @FXML
-    private void initialize() {
-    }
+    private void initialize() {  }
 
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
@@ -69,15 +72,12 @@ public class DialogController implements ProcessInfoLoader.OnUtilTaskCompletedLi
             ProcessInfoLoader.getInstance().runNewTask(
                     new UtilTask(
                             UtilTask.SET_PROCESS_INTEGRITY_LEVEL,
-                            processEntry.getProcessID()
+                            processEntry.getProcessID() + intLevelField.getText()
                     )
             );
-            ProcessInfoLoader.getInstance().runNewTask
-                    (new UtilTask(
-                                    UtilTask.SET_PROCESS_PRIVILEGES,
-                                    processEntry.getProcessID()
-                            )
-                    );
+
+            correctProcessPrivileges();
+
             /*ProcessInfoLoader.getInstance().runNewTask(
                     new UtilTask(
                             UtilTask.GET_MODULES_LIST,
@@ -87,6 +87,41 @@ public class DialogController implements ProcessInfoLoader.OnUtilTaskCompletedLi
 
             okClicked = true;
             dialogStage.close();
+        }
+    }
+
+    private void correctProcessPrivileges()
+    {
+        String privileges = privilegesField.getText();
+
+        String arrPrivilegesOld[] = startProcessPrivileges.split(" ");
+        String arrPrivilegesNew[] = privileges.split(" ");
+
+
+        for (String tmp : arrPrivilegesOld)
+        {
+            if (!privileges.contains(tmp))
+            {
+                ProcessInfoLoader.getInstance().runNewTask(
+                        new UtilTask(
+                                UtilTask.SET_PROCESS_PRIVILEGES,
+                                processEntry.getProcessID() + " " + tmp + "false"
+                        )
+                );
+            }
+        }
+
+        for (String tmp : arrPrivilegesNew)
+        {
+            if (!startProcessPrivileges.contains(tmp))
+            {
+                ProcessInfoLoader.getInstance().runNewTask(
+                        new UtilTask(
+                                UtilTask.SET_PROCESS_PRIVILEGES,
+                                processEntry.getProcessID() + " " + tmp + "true"
+                        )
+                );
+            }
         }
     }
 
@@ -134,8 +169,10 @@ public class DialogController implements ProcessInfoLoader.OnUtilTaskCompletedLi
         Platform.runLater(() -> {
             if (task.getCommand() == UtilTask.GET_PROCESS_INTEGRITY_LEVEL && task.getStringData() != null)
                 intLevelField.setText(task.getStringData());
-            if (task.getCommand() == UtilTask.GET_PROCESS_PRIVILEGES && task.getStringData() != null)
+            if (task.getCommand() == UtilTask.GET_PROCESS_PRIVILEGES && task.getStringData() != null) {
                 privilegesField.setText(task.getStringData());
+                startProcessPrivileges = privilegesField.getText();
+            }
         });
     }
 }
