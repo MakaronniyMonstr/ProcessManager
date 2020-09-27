@@ -50,7 +50,7 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
 
     private boolean maxSize = false;
 
-    public MainController() { ProcessInfoLoader.getInstance().setOnUtilTaskCompletedListener(this); }
+    public MainController() { ProcessInfoLoader.getInstance().addOnUtilTaskCompletedListener(this); }
 
     @FXML
     private void initialize() throws IOException {

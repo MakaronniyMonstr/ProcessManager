@@ -19,7 +19,7 @@ public class ProcessInfoLoader {
     private static ProcessInfoLoader loader;
     //Listeners
     private OnProcessesInfoUpdatedListener processesListener;
-    private OnUtilTaskCompletedListener utilListener;
+    private List<OnUtilTaskCompletedListener> utilListeners = new LinkedList<>();
     //Service threads
     private ScheduledExecutorService processesUpdateService;
     private ScheduledExecutorService utilExecuteService;
@@ -65,8 +65,12 @@ public class ProcessInfoLoader {
     //Additional functionality.
     //Allows you to receive additional system information.
     //Pay attention to UtilTask class.
-    public void setOnUtilTaskCompletedListener(OnUtilTaskCompletedListener utilListener) {
-        loader.utilListener = utilListener;
+    public void addOnUtilTaskCompletedListener(OnUtilTaskCompletedListener utilListener) {
+        loader.utilListeners.add(utilListener);
+    }
+
+    public void removeOnUtilTaskCompletedListener(OnUtilTaskCompletedListener utilListener) {
+        loader.utilListeners.remove(utilListener);
     }
 
     //Here you set up and run processes update service.
@@ -117,7 +121,7 @@ public class ProcessInfoLoader {
 
     //Run new task
     public void runNewTask(UtilTask task) {
-        if (loader.utilListener == null)
+        if (loader.utilListeners.size() == 0)
             return;
 
         loader.utilExecuteService = Executors.newSingleThreadScheduledExecutor();
@@ -127,10 +131,11 @@ public class ProcessInfoLoader {
                         ProcessPipe pipe;
 
                         pipe = new ProcessPipe(execPath, task.getStringCommand());
-                        synchronized (this) {
-                            loader.utilListener
-                                    .onTaskCompleted(parseTask(pipe.getReader(), task));
-                        }
+                        UtilTask outTask = parseTask(pipe.getReader(), task);
+
+                        loader.utilListeners.forEach(onUtilTaskCompletedListener -> {
+                            onUtilTaskCompletedListener.onTaskCompleted(outTask);
+                        });
 
                         pipe.destroy();
 
