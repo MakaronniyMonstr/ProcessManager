@@ -113,9 +113,9 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
                 );
 
             } else {
-                parentIDField.setText("Привет вероника!");
-                parentNameField.setText("Как дела?");
-                pidField.setText("Как жизнь?");
+                parentIDField.setText("Привет Максим!");
+                parentNameField.setText("Ты чего сюда залез?:D");
+                pidField.setText("");
                 typeField.setText("");
                 runEnvField.setText("");
                 depField.setText("");
