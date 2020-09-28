@@ -105,7 +105,7 @@ public class DialogController implements ProcessInfoLoader.OnUtilTaskCompletedLi
                 ProcessInfoLoader.getInstance().runNewTask(
                         new UtilTask(
                                 UtilTask.SET_PROCESS_PRIVILEGES,
-                                processEntry.getProcessID() + " " + tmp + "false"
+                                processEntry.getProcessID() + " " + tmp + " false"
                         )
                 );
             }
@@ -118,7 +118,7 @@ public class DialogController implements ProcessInfoLoader.OnUtilTaskCompletedLi
                 ProcessInfoLoader.getInstance().runNewTask(
                         new UtilTask(
                                 UtilTask.SET_PROCESS_PRIVILEGES,
-                                processEntry.getProcessID() + " " + tmp + "true"
+                                processEntry.getProcessID() + " " + tmp + " true"
                         )
                 );
             }
@@ -146,6 +146,8 @@ public class DialogController implements ProcessInfoLoader.OnUtilTaskCompletedLi
         if (intLevel == null || intLevel.length() == 0) {
             errorMessage += "Invalid level!\n";
         }
+
+
 
         if (errorMessage.length() == 0) {
             return true;
