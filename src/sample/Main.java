@@ -162,7 +162,7 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
             // Передаём адресата в контроллер.
             FileDialogController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-            controller.setProcessEntry(processEntry);
+            controller.setFileEntry(processEntry);
 
             // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
             dialogStage.showAndWait();

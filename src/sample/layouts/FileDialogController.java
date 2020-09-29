@@ -34,26 +34,26 @@ public class FileDialogController implements ProcessInfoLoader.OnUtilTaskComplet
     }
 
 
-    public void setProcessEntry(PropertyProcessEntry processEntry) {
+    public void setFileEntry(PropertyProcessEntry processEntry) {
         this.processEntry = processEntry;
 
         ProcessInfoLoader.getInstance().runNewTask(
                 new UtilTask(
                         UtilTask.GET_FILE_INTEGRITY_LEVEL,
-                        processEntry.getProcessID() + " " + processEntry.getExePath()
+                        processEntry.getExePath()
                 )
         );
         ProcessInfoLoader.getInstance().runNewTask(
                 new UtilTask(
                         UtilTask.GET_FILE_OWNER,
-                        processEntry.getProcessID() + " " + processEntry.getExePath()
+                        processEntry.getExePath()
                 )
         );
 
         ProcessInfoLoader.getInstance().runNewTask(
                 new UtilTask(
                         UtilTask.GET_FILE_ACL,
-                        processEntry.getProcessID() + " " + processEntry.getExePath()
+                        processEntry.getExePath()
                 )
         );
 
@@ -71,21 +71,21 @@ public class FileDialogController implements ProcessInfoLoader.OnUtilTaskComplet
             ProcessInfoLoader.getInstance().runNewTask(
                     new UtilTask(
                             UtilTask.SET_FILE_INTEGRITY_LEVEL,
-                            processEntry.getProcessID() + " " + processEntry.getExePath() + " " + intLevelField.getText()
+                            processEntry.getExePath() + " " + intLevelField.getText()
                     )
             );
 
             ProcessInfoLoader.getInstance().runNewTask(
                     new UtilTask(
                             UtilTask.SET_FILE_OWNER,
-                            processEntry.getProcessID() + " " + processEntry.getExePath() + " " + fileOwnerField.getText()
+                            processEntry.getExePath() + " " + fileOwnerField.getText()
                     )
             );
 
             ProcessInfoLoader.getInstance().runNewTask(
                     new UtilTask(
                             UtilTask.SET_FILE_ACL,
-                            processEntry.getProcessID() + " " + processEntry.getExePath() + " " + aclField.getText()
+                            processEntry.getExePath() + " " + aclField.getText()
                     )
             );
 
