@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import sample.layouts.DialogController;
+import sample.layouts.FileDialogController;
 import sample.layouts.MainController;
 import sample.utils.processinfoloader.ProcessEntry;
 import sample.utils.processinfoloader.ProcessInfoLoader;
@@ -139,6 +140,40 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
             return false;
         }
     }
+
+    public boolean showFileEditDialog(PropertyProcessEntry processEntry) {
+        try {
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("layouts/file_edit_layout.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Создаём диалоговое окно Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Edit File");
+            dialogStage.initStyle(StageStyle.UNDECORATED);
+            dialogStage.initStyle(StageStyle.TRANSPARENT);
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            scene.setFill(Color.TRANSPARENT);
+            dialogStage.setScene(scene);
+
+            // Передаём адресата в контроллер.
+            FileDialogController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setProcessEntry(processEntry);
+
+            // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
+            dialogStage.showAndWait();
+
+            return controller.isOkClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public void closeApplication()
     {

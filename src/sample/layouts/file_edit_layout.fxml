@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane style="-fx-background-radius: 15; -fx-border-radius: 15;" styleClass="background-grey" stylesheets="@../resources/LightTheme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.layouts.DialogController">
+<AnchorPane style="-fx-background-radius: 15; -fx-border-radius: 15;" styleClass="background-grey" stylesheets="@../resources/LightTheme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.layouts.FileDialogController">
    <children>
       <AnchorPane prefHeight="307.2" prefWidth="506.4" style="-fx-background-radius: 15; -fx-border-radius: 15;" styleClass="background-gre-gradient" stylesheets="@../resources/LightTheme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -29,6 +29,7 @@
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label text="Integrity level" textAlignment="CENTER">
@@ -37,8 +38,10 @@
                      </font>
                   </Label>
                   <TextField fx:id="intLevelField" prefWidth="172.0" GridPane.columnIndex="1" />
-                  <Label text="Privileges" GridPane.rowIndex="1" />
-                  <TextField fx:id="privilegesField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="File owner" GridPane.rowIndex="1" />
+                  <TextField fx:id="fileOwnerField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="ACL" GridPane.rowIndex="2" />
+                  <TextField fx:id="aclField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
          </children>

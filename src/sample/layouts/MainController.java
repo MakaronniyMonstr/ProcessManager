@@ -168,6 +168,33 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
     }
 
     @FXML
+    private void handleEditFile() {
+        PropertyProcessEntry selectedProcess = processTable.getSelectionModel().getSelectedItem();
+
+        if (selectedProcess != null) {
+            boolean okClicked = mainApp.showFileEditDialog(selectedProcess);
+
+            if (okClicked) {
+                try {
+                    showProcessDetails(selectedProcess);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else {
+            // Ничего не выбрано.
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("No Selection");
+            alert.setHeaderText("No Process Selected");
+            alert.setContentText("Please select a process in the table.");
+
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
     private void  handleCloseButton()
     {
         mainApp.closeApplication();

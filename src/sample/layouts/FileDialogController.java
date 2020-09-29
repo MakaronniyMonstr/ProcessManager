@@ -9,23 +9,21 @@ import sample.utils.processinfoloader.ProcessInfoLoader;
 import sample.utils.processinfoloader.PropertyProcessEntry;
 import sample.utils.processinfoloader.UtilTask;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class DialogController implements ProcessInfoLoader.OnUtilTaskCompletedListener{
+public class FileDialogController implements ProcessInfoLoader.OnUtilTaskCompletedListener{
 
     @FXML
     private TextField intLevelField;
     @FXML
-    private TextField privilegesField;
+    private TextField fileOwnerField;
+    @FXML
+    private TextField aclField;
 
 
     private Stage dialogStage;
     private PropertyProcessEntry processEntry;
     private boolean okClicked = false;
-    private String startProcessPrivileges;
 
-    public DialogController() {ProcessInfoLoader.getInstance().addOnUtilTaskCompletedListener(this);}
+    public FileDialogController() {ProcessInfoLoader.getInstance().addOnUtilTaskCompletedListener(this);}
 
 
     @FXML
@@ -41,14 +39,21 @@ public class DialogController implements ProcessInfoLoader.OnUtilTaskCompletedLi
 
         ProcessInfoLoader.getInstance().runNewTask(
                 new UtilTask(
-                        UtilTask.GET_PROCESS_INTEGRITY_LEVEL,
-                        processEntry.getProcessID()
+                        UtilTask.GET_FILE_INTEGRITY_LEVEL,
+                        processEntry.getProcessID() + " " + processEntry.getExePath()
                 )
         );
         ProcessInfoLoader.getInstance().runNewTask(
                 new UtilTask(
-                        UtilTask.GET_PROCESS_PRIVILEGES,
-                        processEntry.getProcessID()
+                        UtilTask.GET_FILE_OWNER,
+                        processEntry.getProcessID() + " " + processEntry.getExePath()
+                )
+        );
+
+        ProcessInfoLoader.getInstance().runNewTask(
+                new UtilTask(
+                        UtilTask.GET_FILE_ACL,
+                        processEntry.getProcessID() + " " + processEntry.getExePath()
                 )
         );
 
@@ -65,52 +70,30 @@ public class DialogController implements ProcessInfoLoader.OnUtilTaskCompletedLi
 
             ProcessInfoLoader.getInstance().runNewTask(
                     new UtilTask(
-                            UtilTask.SET_PROCESS_INTEGRITY_LEVEL,
-                            processEntry.getProcessID() + " " + intLevelField.getText()
+                            UtilTask.SET_FILE_INTEGRITY_LEVEL,
+                            processEntry.getProcessID() + " " + processEntry.getExePath() + " " + intLevelField.getText()
                     )
             );
 
-            correctProcessPrivileges();
+            ProcessInfoLoader.getInstance().runNewTask(
+                    new UtilTask(
+                            UtilTask.SET_FILE_OWNER,
+                            processEntry.getProcessID() + " " + processEntry.getExePath() + " " + fileOwnerField.getText()
+                    )
+            );
+
+            ProcessInfoLoader.getInstance().runNewTask(
+                    new UtilTask(
+                            UtilTask.SET_FILE_ACL,
+                            processEntry.getProcessID() + " " + processEntry.getExePath() + " " + aclField.getText()
+                    )
+            );
 
             okClicked = true;
             dialogStage.close();
         }
     }
 
-    private void correctProcessPrivileges()
-    {
-        String privileges = privilegesField.getText();
-
-        String arrPrivilegesOld[] = startProcessPrivileges.split(" ");
-        String arrPrivilegesNew[] = privileges.split(" ");
-
-
-        for (String tmp : arrPrivilegesOld)
-        {
-            if (!privileges.contains(tmp))
-            {
-                ProcessInfoLoader.getInstance().runNewTask(
-                        new UtilTask(
-                                UtilTask.SET_PROCESS_PRIVILEGES,
-                                processEntry.getProcessID() + " " + tmp + " false"
-                        )
-                );
-            }
-        }
-
-        for (String tmp : arrPrivilegesNew)
-        {
-            if (!startProcessPrivileges.contains(tmp))
-            {
-                ProcessInfoLoader.getInstance().runNewTask(
-                        new UtilTask(
-                                UtilTask.SET_PROCESS_PRIVILEGES,
-                                processEntry.getProcessID() + " " + tmp + " true"
-                        )
-                );
-            }
-        }
-    }
 
     @FXML
     private void handleCancel() {
@@ -149,12 +132,12 @@ public class DialogController implements ProcessInfoLoader.OnUtilTaskCompletedLi
     public void onTaskCompleted(UtilTask task) {
 
         Platform.runLater(() -> {
-            if (task.getCommand() == UtilTask.GET_PROCESS_INTEGRITY_LEVEL && task.getStringData() != null)
+            if (task.getCommand() == UtilTask.GET_FILE_INTEGRITY_LEVEL && task.getStringData() != null)
                 intLevelField.setText(task.getStringData());
-            if (task.getCommand() == UtilTask.GET_PROCESS_PRIVILEGES && task.getStringData() != null) {
-                privilegesField.setText(task.getStringData());
-                startProcessPrivileges = privilegesField.getText();
-            }
+            if (task.getCommand() == UtilTask.GET_FILE_OWNER && task.getStringData() != null)
+                fileOwnerField.setText(task.getStringData());
+            if (task.getCommand() == UtilTask.GET_FILE_ACL && task.getStringData() != null)
+                aclField.setText(task.getStringData());
         });
     }
 }
