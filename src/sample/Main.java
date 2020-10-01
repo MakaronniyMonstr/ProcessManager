@@ -141,7 +141,7 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
         }
     }
 
-    public boolean showFileEditDialog(PropertyProcessEntry processEntry) {
+    public boolean showFileEditDialog() {
         try {
 
             FXMLLoader loader = new FXMLLoader();
@@ -162,7 +162,7 @@ public class Main extends Application implements ProcessInfoLoader.OnProcessesIn
             // Передаём адресата в контроллер.
             FileDialogController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-            controller.setFileEntry(processEntry);
+            //controller.setFileEntry();
 
             // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
             dialogStage.showAndWait();

@@ -41,8 +41,6 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
     private TextField dllLibsField;
     @FXML
     private TextField privilegesField;
-    @FXML
-    private TextField aclField;
 
     private int lastIndex= -1;
     private PropertyProcessEntry selectedItem = null;
@@ -91,7 +89,6 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
                 depField.textProperty().bind(processEntry.spaceLayoutProperty());
                 sidField.textProperty().bind(processEntry.SIDProperty());
                 fileOwnerField.textProperty().bind(processEntry.ownerNameProperty());
-                aclField.setText("");
 
                 ProcessInfoLoader.getInstance().runNewTask(
                         new UtilTask(
@@ -124,7 +121,6 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
                 intLevelField.setText("");
                 privilegesField.setText("");
                 fileOwnerField.setText("");
-                aclField.setText("");
             }
     }
 
@@ -169,29 +165,11 @@ public class MainController implements ProcessInfoLoader.OnUtilTaskCompletedList
 
     @FXML
     private void handleEditFile() {
-        PropertyProcessEntry selectedProcess = processTable.getSelectionModel().getSelectedItem();
+        //PropertyProcessEntry selectedProcess = processTable.getSelectionModel().getSelectedItem();
 
-        if (selectedProcess != null) {
-            boolean okClicked = mainApp.showFileEditDialog(selectedProcess);
+            mainApp.showFileEditDialog();
 
-            if (okClicked) {
-                try {
-                    showProcessDetails(selectedProcess);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
 
-        } else {
-            // Ничего не выбрано.
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.initOwner(mainApp.getPrimaryStage());
-            alert.setTitle("No Selection");
-            alert.setHeaderText("No Process Selected");
-            alert.setContentText("Please select a process in the table.");
-
-            alert.showAndWait();
-        }
     }
 
     @FXML

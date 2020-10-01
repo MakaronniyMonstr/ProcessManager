@@ -90,8 +90,6 @@
                         <TextField fx:id="fileOwnerField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                         <TextField fx:id="sidField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                         <TextField fx:id="intLevelField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                        <Label text="ACL(Files only)" GridPane.rowIndex="11" />
-                        <TextField fx:id="aclField" GridPane.columnIndex="1" GridPane.rowIndex="11" />
                      </children>
                   </GridPane>
                   <Button alignment="CENTER" contentDisplay="TOP" layoutX="206.0" layoutY="512.0" mnemonicParsing="false" onAction="#handleEditPerson" prefHeight="35.0" prefWidth="110.0" text="Edit proc" textAlignment="CENTER" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />

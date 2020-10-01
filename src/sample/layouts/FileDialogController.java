@@ -12,6 +12,8 @@ import sample.utils.processinfoloader.UtilTask;
 public class FileDialogController implements ProcessInfoLoader.OnUtilTaskCompletedListener{
 
     @FXML
+    private TextField pathField;
+    @FXML
     private TextField intLevelField;
     @FXML
     private TextField fileOwnerField;
@@ -34,63 +36,43 @@ public class FileDialogController implements ProcessInfoLoader.OnUtilTaskComplet
     }
 
 
-    public void setFileEntry(PropertyProcessEntry processEntry) {
-        this.processEntry = processEntry;
-
-        ProcessInfoLoader.getInstance().runNewTask(
-                new UtilTask(
-                        UtilTask.GET_FILE_INTEGRITY_LEVEL,
-                        processEntry.getExePath()
-                )
-        );
-        ProcessInfoLoader.getInstance().runNewTask(
-                new UtilTask(
-                        UtilTask.GET_FILE_OWNER,
-                        processEntry.getExePath()
-                )
-        );
-
-        ProcessInfoLoader.getInstance().runNewTask(
-                new UtilTask(
-                        UtilTask.GET_FILE_ACL,
-                        processEntry.getExePath()
-                )
-        );
-
-    }
-
-
     public boolean isOkClicked() {
         return okClicked;
     }
 
     @FXML
-    private void handleOk() {
+    private void handleIntLevelButton() {
         if (isInputValid()) {
-
             ProcessInfoLoader.getInstance().runNewTask(
                     new UtilTask(
                             UtilTask.SET_FILE_INTEGRITY_LEVEL,
-                            processEntry.getExePath() + " " + intLevelField.getText()
+                            pathField.getText() + " " + intLevelField.getText()
                     )
             );
+        }
+    }
 
+    @FXML
+    private void handleFileOwnerButton() {
+        if (isInputValid()) {
             ProcessInfoLoader.getInstance().runNewTask(
                     new UtilTask(
                             UtilTask.SET_FILE_OWNER,
-                            processEntry.getExePath() + " " + fileOwnerField.getText()
+                            fileOwnerField.getText() + " " + fileOwnerField.getText()
                     )
             );
+        }
+    }
 
+    @FXML
+    private void handleAclButton() {
+        if (isInputValid()) {
             ProcessInfoLoader.getInstance().runNewTask(
                     new UtilTask(
                             UtilTask.SET_FILE_ACL,
-                            processEntry.getExePath() + " " + aclField.getText()
+                            aclField.getText() + " " + aclField.getText()
                     )
             );
-
-            okClicked = true;
-            dialogStage.close();
         }
     }
 
@@ -132,12 +114,12 @@ public class FileDialogController implements ProcessInfoLoader.OnUtilTaskComplet
     public void onTaskCompleted(UtilTask task) {
 
         Platform.runLater(() -> {
-            if (task.getCommand() == UtilTask.GET_FILE_INTEGRITY_LEVEL && task.getStringData() != null)
+            /*if (task.getCommand() == UtilTask.GET_FILE_INTEGRITY_LEVEL && task.getStringData() != null)
                 intLevelField.setText(task.getStringData());
             if (task.getCommand() == UtilTask.GET_FILE_OWNER && task.getStringData() != null)
                 fileOwnerField.setText(task.getStringData());
             if (task.getCommand() == UtilTask.GET_FILE_ACL && task.getStringData() != null)
-                aclField.setText(task.getStringData());
+                aclField.setText(task.getStringData());*/
         });
     }
 }
